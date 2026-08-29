@@ -1,0 +1,271 @@
+body {
+    background: #f4f7fb !important;
+}
+
+.swagger-ui .topbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #e1e7ef;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+}
+
+.swagger-ui .topbar-wrapper {
+    padding: 12px 20px;
+}
+
+.swagger-ui .topbar .link span {
+    color: #101b33 !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+}
+
+.swagger-ui .wrapper {
+    max-width: 1250px;
+}
+
+.swagger-ui .info {
+    margin: 35px 0 30px;
+}
+
+.swagger-ui .info .title {
+    color: #101b33;
+    font-size: 32px;
+    font-weight: 800;
+}
+
+.swagger-ui .info p {
+    color: #5f789c;
+}
+
+
+.swagger-ui .opblock-tag {
+    color: #101b33 !important;
+
+    font-size: 20px !important;
+    font-weight: 700 !important;
+
+    border-bottom: 1px solid #dfe6ef;
+
+    padding: 18px 10px 14px;
+}
+
+
+.swagger-ui .opblock-tag:hover {
+    color: #2563eb !important;
+}
+
+
+.swagger-ui .opblock {
+    border-radius: 10px !important;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.04);
+
+    margin-bottom: 12px !important;
+
+    border-width: 1px !important;
+}
+
+
+.swagger-ui .opblock.opblock-get {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+}
+
+
+.swagger-ui .opblock.opblock-post {
+    background: #ecfdf5;
+    border-color: #a7f3d0;
+}
+
+
+.swagger-ui .opblock.opblock-put {
+    background: #fff7ed;
+    border-color: #fed7aa;
+}
+
+
+.swagger-ui .opblock.opblock-patch {
+    background: #fefce8;
+    border-color: #fde68a;
+}
+
+
+.swagger-ui .opblock.opblock-delete {
+    background: #fff1f2;
+    border-color: #fecdd3;
+}
+
+
+.swagger-ui .opblock-summary-method {
+    border-radius: 6px !important;
+
+    font-weight: 700 !important;
+
+    min-width: 75px !important;
+}
+
+
+.swagger-ui .opblock-summary-path {
+    color: #172033 !important;
+
+    font-size: 14px !important;
+    font-weight: 600 !important;
+}
+
+
+.swagger-ui .opblock-summary-description {
+    color: #5f789c !important;
+
+    font-weight: 500 !important;
+}
+
+
+.swagger-ui .opblock-body {
+    background: #ffffff;
+}
+
+
+.swagger-ui .btn {
+    border-radius: 7px !important;
+
+    font-weight: 600 !important;
+}
+
+
+.swagger-ui .btn.authorize {
+    color: #2563eb !important;
+
+    border-color: #2563eb !important;
+
+    background: #eff6ff !important;
+}
+
+.swagger-ui .btn.authorize:hover {
+    background: #dbeafe !important;
+}
+
+
+.swagger-ui .btn.execute {
+    background: #2563eb !important;
+
+    border-color: #2563eb !important;
+
+    color: #ffffff !important;
+}
+
+.swagger-ui .btn.execute:hover {
+    background: #1d4ed8 !important;
+}
+
+
+.swagger-ui input[type="text"],
+.swagger-ui input[type="password"],
+.swagger-ui input[type="number"],
+.swagger-ui textarea,
+.swagger-ui select {
+    border: 1px solid #cbd5e1 !important;
+
+    border-radius: 7px !important;
+
+    padding: 8px 10px !important;
+
+    background: #ffffff !important;
+}
+
+.swagger-ui input:focus,
+.swagger-ui textarea:focus,
+.swagger-ui select:focus {
+    border-color: #2563eb !important;
+
+    outline: none !important;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+.swagger-ui table thead tr th {
+    color: #101b33 !important;
+
+    font-weight: 700 !important;
+}
+
+.swagger-ui table tbody tr td {
+    color: #34445c;
+}
+
+
+.swagger-ui section.models {
+    border: 1px solid #e1e7ef;
+
+    border-radius: 10px;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.swagger-ui section.models h4 {
+    color: #101b33;
+
+    font-weight: 700;
+}
+
+
+.swagger-ui .model-box {
+    background: #f8fafc;
+}
+
+
+.swagger-ui .dialog-ux .modal-ux {
+    border-radius: 12px;
+
+    box-shadow:
+        0 15px 50px rgba(15, 23, 42, 0.2);
+}
+
+.swagger-ui .dialog-ux .modal-ux-header {
+    border-bottom: 1px solid #e5eaf1;
+}
+
+.swagger-ui .dialog-ux .modal-ux-header h3 {
+    color: #101b33;
+}
+
+
+.swagger-ui .highlight-code {
+    border-radius: 8px;
+}
+
+
+.swagger-ui .responses-inner {
+    padding: 15px;
+}
+
+
+.swagger-ui a {
+    color: #2563eb;
+}
+
+.swagger-ui a:hover {
+    color: #1d4ed8;
+}
+
+
+
+@media (max-width: 700px) {
+
+    .swagger-ui .wrapper {
+        padding: 0 15px;
+    }
+
+    .swagger-ui .info .title {
+        font-size: 25px;
+    }
+
+    .swagger-ui .opblock-summary-path {
+        font-size: 12px !important;
+    }
+
+}
