@@ -57,12 +57,6 @@ The system provides patient management, vaccine information, vaccination schedul
 * Associate vaccination records with patients and vaccines
 * Record the administrator or healthcare worker responsible for administration
 
-### ⚠️ Missed Dose Tracking
-
-* Identify potentially missed vaccination doses
-* Compare patient vaccination history with vaccination schedules
-* Display missed-dose information to patients
-
 ### 📄 Vaccination Certificates
 
 * Generate vaccination certificates
@@ -95,7 +89,6 @@ Supported roles:
 
 * `PATIENT`
 * `ADMIN`
-* `HEALTHCARE_WORKER`
 
 Different roles have access to different parts of the application.
 
@@ -390,7 +383,7 @@ Configure the SQL Server connection using environment variables or your local co
 **Do not use or commit a machine-specific connection string such as:**
 
 ```text
-mssql+pyodbc://@NAANU\SQLEXPRESS/
+YOUR SQL SERVER
 ```
 
 Each developer should configure their own SQL Server instance.
