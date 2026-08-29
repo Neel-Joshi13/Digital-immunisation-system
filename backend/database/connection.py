@@ -2,8 +2,8 @@ from sqlalchemy import create_engine
 
 
 DATABASE_URL = (
-    "mssql+pyodbc://@NAANU\\SQLEXPRESS/"
-    "DigitalImmunisation"
+    "DATABASE_URL"
+    "Database Name"
     "?driver=ODBC+Driver+17+for+SQL+Server"
     "&trusted_connection=yes"
 )
