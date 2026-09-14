@@ -8,7 +8,7 @@ The system provides patient profile management, vaccine information, vaccination
 
 # Features
 
-## 👤 Patient Management
+## Patient Management
 
 Patients can:
 
@@ -27,7 +27,7 @@ Patients can:
 
 ---
 
-## 💉 Vaccine Management
+## Vaccine Management
 
 Administrators can manage vaccine information including:
 
@@ -42,7 +42,7 @@ Vaccines can be associated with vaccination schedules and immunisation records.
 
 ---
 
-## 📅 Vaccination Schedules
+## Vaccination Schedules
 
 The system supports vaccination schedule management.
 
@@ -60,7 +60,7 @@ Patients can view their vaccination schedule through the patient portal.
 
 ---
 
-## 🏥 Healthcare Centres
+## Healthcare Centres
 
 Administrators can manage healthcare centres.
 
@@ -74,7 +74,7 @@ Patients can select healthcare centres when booking appointments.
 
 ---
 
-## 📆 Appointment Management
+## Appointment Management
 
 Patients can:
 
@@ -88,7 +88,7 @@ Appointment statuses are displayed based on the appointment information and date
 
 ---
 
-## 📋 Immunisation Records
+## Immunisation Records
 
 The system stores immunisation records for patients.
 
@@ -104,7 +104,7 @@ Immunisation records are used to build vaccination history and support missed-do
 
 ---
 
-## ⚠️ Missed-Dose Tracking
+## Missed-Dose Tracking
 
 The system provides missed-dose tracking based on vaccination schedules and existing immunisation records.
 
@@ -120,7 +120,7 @@ Administrators can view missed-dose alerts and send notifications to patients.
 
 ---
 
-## 🔔 Patient Notifications
+## Patient Notifications
 
 The system provides notifications for patients.
 
@@ -142,7 +142,7 @@ Missed-dose notifications are supported through the notification system.
 
 ---
 
-## 📄 Vaccination Certificates
+## Vaccination Certificates
 
 The system supports digital vaccination certificates.
 
@@ -157,7 +157,7 @@ Certificates contain vaccination-related information and a verification mechanis
 
 ---
 
-## 🔎 Certificate Verification
+## Certificate Verification
 
 Vaccination certificates can be verified using a verification URL.
 
@@ -171,7 +171,7 @@ The backend verifies the certificate token and validates the associated vaccinat
 
 ---
 
-## 🤖 AI Vaccine Assistant
+## AI Vaccine Assistant
 
 The system includes a locally hosted AI-powered Vaccine Assistant using **Ollama**.
 
@@ -207,7 +207,7 @@ The AI assistant is accessed through the patient portal.
 
 ---
 
-## 🌐 Patient Language Support
+## Patient Language Support
 
 The patient portal supports:
 
@@ -222,7 +222,7 @@ The AI Vaccine Assistant also uses the selected patient language when generating
 
 ---
 
-## 🔐 Authentication and Role-Based Access
+## Authentication and Role-Based Access
 
 The system uses JWT-based authentication and role-based authorization.
 
@@ -231,7 +231,6 @@ Supported roles:
 ```text
 PATIENT
 ADMIN
-HEALTHCARE_WORKER
 ```
 
 Different roles have access to different parts of the application.
