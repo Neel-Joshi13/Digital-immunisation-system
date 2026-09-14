@@ -1,8 +1,43 @@
+import { useEffect, useState } from "react";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { getMyNotifications } from "../services/api";
+import { useLanguage } from "../context/LanguageContext";
 import "../styles/patient.css";
 
 function PatientLayout() {
   const navigate = useNavigate();
+
+  const { language, changeLanguage } = useLanguage();
+
+  const [unreadNotifications, setUnreadNotifications] =
+    useState(0);
+
+  async function loadUnreadNotifications() {
+    try {
+      const notifications = await getMyNotifications();
+
+      const unreadCount = notifications.filter(
+        (notification) => !notification.is_read
+      ).length;
+
+      setUnreadNotifications(unreadCount);
+    } catch (error) {
+      console.error(
+        "Failed to load notification count:",
+        error
+      );
+    }
+  }
+
+  useEffect(() => {
+    loadUnreadNotifications();
+
+    const interval = setInterval(() => {
+      loadUnreadNotifications();
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   function handleLogout() {
     localStorage.removeItem("access_token");
@@ -12,6 +47,30 @@ function PatientLayout() {
   function openVaccineAssistant() {
     navigate("/patient/vaccine-assistant");
   }
+
+  const text = {
+    en: {
+      dashboard: "Dashboard",
+      profile: "My Profile",
+      vaccinations: "Vaccination History",
+      appointments: "Appointments",
+      schedule: "Vaccination Schedule",
+      notifications: "Notifications",
+      logout: "Logout",
+    },
+
+    hi: {
+      dashboard: "डैशबोर्ड",
+      profile: "मेरी प्रोफ़ाइल",
+      vaccinations: "टीकाकरण इतिहास",
+      appointments: "अपॉइंटमेंट",
+      schedule: "टीकाकरण अनुसूची",
+      notifications: "सूचनाएँ",
+      logout: "लॉग आउट",
+    },
+  };
+
+  const currentText = text[language];
 
   return (
     <div className="patient-layout">
@@ -66,7 +125,7 @@ function PatientLayout() {
                 : "patient-nav-link"
             }
           >
-            Dashboard
+            {currentText.dashboard}
           </NavLink>
 
           <NavLink
@@ -77,7 +136,7 @@ function PatientLayout() {
                 : "patient-nav-link"
             }
           >
-            My Profile
+            {currentText.profile}
           </NavLink>
 
           <NavLink
@@ -88,7 +147,7 @@ function PatientLayout() {
                 : "patient-nav-link"
             }
           >
-            Vaccination History
+            {currentText.vaccinations}
           </NavLink>
 
           <NavLink
@@ -99,7 +158,7 @@ function PatientLayout() {
                 : "patient-nav-link"
             }
           >
-            Appointments
+            {currentText.appointments}
           </NavLink>
 
           <NavLink
@@ -110,15 +169,52 @@ function PatientLayout() {
                 : "patient-nav-link"
             }
           >
-            Vaccination Schedule
+            {currentText.schedule}
+          </NavLink>
+
+          <NavLink
+            to="/patient/notifications"
+            className={({ isActive }) =>
+              isActive
+                ? "patient-nav-link active"
+                : "patient-nav-link"
+            }
+          >
+            <span className="patient-notification-nav">
+              {currentText.notifications}
+
+              {unreadNotifications > 0 && (
+                <span
+                  className="patient-notification-badge"
+                  aria-label={`${unreadNotifications} unread notifications`}
+                >
+                  {unreadNotifications > 99
+                    ? "99+"
+                    : unreadNotifications}
+                </span>
+              )}
+            </span>
           </NavLink>
         </nav>
+
+        <div className="patient-language-control">
+          <select
+            value={language}
+            onChange={(event) =>
+              changeLanguage(event.target.value)
+            }
+            aria-label="Select language"
+          >
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+          </select>
+        </div>
 
         <button
           className="patient-logout"
           onClick={handleLogout}
         >
-          Logout
+          {currentText.logout}
         </button>
       </header>
 

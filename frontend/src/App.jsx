@@ -14,28 +14,22 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminCentres from "./pages/AdminCentres";
 import AdminVaccines from "./pages/AdminVaccines";
 import AdminImmunisations from "./pages/AdminImmunisations";
-import AdminVaccinationSchedules
-  from "./pages/AdminVaccinationSchedules";
-
+import AdminVaccinationSchedules from "./pages/AdminVaccinationSchedules";
 import VaccineChatbot from "./pages/VaccineChatbot";
 import AIAssistant from "./pages/AIAssistant";
 import CertificateVerification from "./pages/CertificateVerification";
-
+import PatientNotifications from "./pages/PatientNotifications";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PatientLayout from "./layouts/PatientLayout";
 import WorkerLayout from "./layouts/WorkerLayout";
-
 import VaccinationHistory from "./pages/VaccinationHistory";
 import Appointments from "./pages/Appointments";
-
-import PatientVaccinationSchedule
-  from "./pages/PatientVaccinationSchedule";
+import PatientVaccinationSchedule from "./pages/PatientVaccinationSchedule";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
         <Route
           path="/"
           element={
@@ -51,13 +45,11 @@ function App() {
           element={<Login />}
         />
 
-        {/* Certificate Verification Route */}
         <Route
           path="/verify/:token"
           element={<CertificateVerification />}
         />
 
-        {/* Patient Routes */}
         <Route
           path="/patient"
           element={
@@ -87,6 +79,11 @@ function App() {
           />
 
           <Route
+            path="notifications"
+            element={<PatientNotifications />}
+          />
+
+          <Route
             path="vaccine-assistant"
             element={<VaccineChatbot />}
           />
@@ -111,7 +108,6 @@ function App() {
           />
         </Route>
 
-        {/* Worker Routes */}
         <Route
           path="/worker"
           element={
@@ -128,7 +124,6 @@ function App() {
           />
         </Route>
 
-        {/* Admin Route */}
         <Route
           path="/admin"
           element={
@@ -140,7 +135,6 @@ function App() {
           }
         />
 
-        {/* Admin Users Route */}
         <Route
           path="/admin/users"
           element={
@@ -152,7 +146,6 @@ function App() {
           }
         />
 
-        {/* Admin Healthcare Centres Route */}
         <Route
           path="/admin/healthcare-centres"
           element={
@@ -164,7 +157,6 @@ function App() {
           }
         />
 
-        {/* Admin Vaccines Route */}
         <Route
           path="/admin/vaccines"
           element={
@@ -176,7 +168,6 @@ function App() {
           }
         />
 
-        {/* Admin Immunisations Route */}
         <Route
           path="/admin/immunisations"
           element={
@@ -188,7 +179,6 @@ function App() {
           }
         />
 
-        {/* Admin Vaccination Schedule Route */}
         <Route
           path="/admin/vaccination-schedules"
           element={
@@ -199,7 +189,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );

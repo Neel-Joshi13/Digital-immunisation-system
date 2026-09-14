@@ -1,166 +1,97 @@
-/* =========================================================
-   VACCINATION HISTORY PAGE
-   Premium / Modern / Production-ready
-   ========================================================= */
-
 .vaccination-history {
   width: 100%;
   max-width: 1100px;
 }
 
-
-/* =========================================================
-   PAGE HEADER
-   ========================================================= */
-
 .vaccination-history-header {
   position: relative;
-
   margin-bottom: 34px;
 }
 
 .vaccination-history-header h1 {
   margin: 0;
-
   color: #0b1733;
-
   font-size: 36px;
   font-weight: 800;
-
   line-height: 1.15;
-
   letter-spacing: -0.045em;
-
   text-rendering: optimizeLegibility;
 }
 
 .vaccination-history-header p {
   max-width: 650px;
-
   margin: 11px 0 0;
-
   color: #64748b;
-
   font-size: 15px;
   font-weight: 450;
-
   line-height: 1.6;
 }
 
-
-/* =========================================================
-   MAIN CARD
-   ========================================================= */
-
 .vaccination-history-card {
   position: relative;
-
   width: 100%;
-
   padding: 32px;
-
   box-sizing: border-box;
-
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #fcfdff 100%
-    );
-
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #fcfdff 100%
+  );
   border: 1px solid #e3e9f2;
-
   border-radius: 20px;
-
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.02),
     0 8px 28px rgba(15, 23, 42, 0.045),
     0 22px 55px rgba(37, 99, 235, 0.035);
-
   overflow: hidden;
-
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
-
-/*
- * Extremely subtle top highlight.
- */
-
 .vaccination-history-card::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   left: 32px;
   right: 32px;
-
   height: 1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(37, 99, 235, 0.28),
-      transparent
-    );
-
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(37, 99, 235, 0.28),
+    transparent
+  );
   pointer-events: none;
 }
-
-
-/* =========================================================
-   CARD HEADER
-   ========================================================= */
 
 .vaccination-history-card-header {
   display: flex;
   align-items: center;
-
   gap: 18px;
-
   padding-bottom: 26px;
-
   border-bottom: 1px solid #edf1f6;
 }
 
-
-/* =========================================================
-   HISTORY ICON
-   ========================================================= */
-
 .vaccination-history-icon {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 58px;
   height: 58px;
-
   flex-shrink: 0;
-
   color: #2563eb;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f4f8ff 0%,
-      #e7f0ff 100%
-    );
-
+  background: linear-gradient(
+    145deg,
+    #f4f8ff 0%,
+    #e7f0ff 100%
+  );
   border: 1px solid #cfe0ff;
-
   border-radius: 16px;
-
   box-shadow:
     0 8px 20px rgba(37, 99, 235, 0.10),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
@@ -168,7 +99,6 @@
 
 .vaccination-history-card:hover .vaccination-history-icon {
   transform: translateY(-2px);
-
   box-shadow:
     0 11px 25px rgba(37, 99, 235, 0.14),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -179,149 +109,88 @@
   height: 26px;
 }
 
-
-/* =========================================================
-   CARD TITLE
-   ========================================================= */
-
 .vaccination-history-card-title {
   min-width: 0;
 }
 
 .vaccination-history-card-title h2 {
   margin: 0;
-
   color: #111c35;
-
   font-size: 20px;
   font-weight: 750;
-
   line-height: 1.3;
-
   letter-spacing: -0.025em;
 }
 
 .vaccination-history-card-title p {
   margin: 5px 0 0;
-
   color: #94a3b8;
-
   font-size: 13px;
   font-weight: 500;
-
   line-height: 1.45;
 }
 
-
-/* =========================================================
-   TABLE WRAPPER
-   ========================================================= */
-
 .vaccination-history-table-wrapper {
   width: 100%;
-
   margin-top: 26px;
-
   overflow-x: auto;
-
   border: 1px solid #e7ecf3;
-
   border-radius: 15px;
-
   background: #ffffff;
-
   box-shadow:
     0 3px 14px rgba(15, 23, 42, 0.025);
-
   scrollbar-width: thin;
 }
 
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
 .vaccination-history-table {
   width: 100%;
-
   min-width: 680px;
-
   border-collapse: separate;
   border-spacing: 0;
-
   font-size: 14px;
 }
 
-
-/* =========================================================
-   TABLE HEADER
-   ========================================================= */
-
 .vaccination-history-table thead tr {
-  background:
-    linear-gradient(
-      180deg,
-      #fafcff 0%,
-      #f7f9fc 100%
-    );
+  background: linear-gradient(
+    180deg,
+    #fafcff 0%,
+    #f7f9fc 100%
+  );
 }
 
 .vaccination-history-table th {
   padding: 15px 18px;
-
   color: #64748b;
-
   background: transparent;
-
   border-top: none;
   border-bottom: 1px solid #e7ecf3;
-
   font-size: 10.5px;
   font-weight: 800;
-
   line-height: 1.3;
-
   letter-spacing: 0.085em;
-
   text-align: left;
-
   text-transform: uppercase;
-
   white-space: nowrap;
 }
 
 .vaccination-history-table th:first-child {
   border-left: none;
-
   border-top-left-radius: 14px;
 }
 
 .vaccination-history-table th:last-child {
   border-right: none;
-
   border-top-right-radius: 14px;
 }
 
-
-/* =========================================================
-   TABLE DATA
-   ========================================================= */
-
 .vaccination-history-table td {
   padding: 18px;
-
   color: #172033;
-
   background: #ffffff;
-
   border-bottom: 1px solid #edf1f6;
-
   font-size: 14px;
-
   line-height: 1.5;
-
   vertical-align: middle;
-
   transition:
     background 0.18s ease,
     color 0.18s ease;
@@ -330,11 +199,6 @@
 .vaccination-history-table tbody tr:last-child td {
   border-bottom: none;
 }
-
-
-/* =========================================================
-   TABLE ROW
-   ========================================================= */
 
 .vaccination-history-table tbody tr {
   transition:
@@ -350,56 +214,33 @@
   color: #1d4ed8;
 }
 
-
-/* =========================================================
-   VACCINE NAME
-   ========================================================= */
-
 .vaccination-history-vaccine {
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   color: #172033;
-
   font-weight: 650;
-
   transition:
     color 0.18s ease;
 }
-
-
-/* =========================================================
-   VACCINE ICON
-   ========================================================= */
 
 .vaccination-history-vaccine-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 37px;
   height: 37px;
-
   flex-shrink: 0;
-
   color: #2563eb;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f3f7ff,
-      #eaf2ff
-    );
-
+  background: linear-gradient(
+    145deg,
+    #f3f7ff,
+    #eaf2ff
+  );
   border: 1px solid #d7e5ff;
-
   border-radius: 10px;
-
   box-shadow:
     0 3px 8px rgba(37, 99, 235, 0.06);
-
   transition:
     transform 0.18s ease,
     background 0.18s ease,
@@ -414,59 +255,35 @@
 .vaccination-history-table tbody tr:hover
 .vaccination-history-vaccine-icon {
   transform: scale(1.04);
-
   background: #eaf2ff;
-
   border-color: #c8dcff;
 }
-
-
-/* =========================================================
-   DOSE BADGE
-   ========================================================= */
 
 .vaccination-history-dose {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-width: 48px;
-
   padding: 6px 10px;
-
   color: #1d4ed8;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f1f6ff,
-      #e8f1ff
-    );
-
+  background: linear-gradient(
+    145deg,
+    #f1f6ff,
+    #e8f1ff
+  );
   border: 1px solid #d5e4ff;
-
   border-radius: 8px;
-
   font-size: 11.5px;
   font-weight: 750;
-
   line-height: 1.3;
-
   box-shadow:
     0 2px 6px rgba(37, 99, 235, 0.045);
-
   white-space: nowrap;
 }
-
-
-/* =========================================================
-   CERTIFICATE DOWNLOAD
-   ========================================================= */
 
 .vaccination-history-certificate {
   display: flex;
   justify-content: flex-end;
-
   margin-top: 20px;
 }
 
@@ -474,33 +291,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   min-height: 42px;
-
   padding: 10px 17px;
-
   color: #2563eb;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f4f8ff,
-      #eaf2ff
-    );
-
+  background: linear-gradient(
+    145deg,
+    #f4f8ff,
+    #eaf2ff
+  );
   border: 1px solid #cfe0ff;
-
   border-radius: 9px;
-
   font-family: inherit;
   font-size: 13px;
   font-weight: 700;
-
   cursor: pointer;
-
   box-shadow:
     0 3px 10px rgba(37, 99, 235, 0.06);
-
   transition:
     color 0.2s ease,
     background 0.2s ease,
@@ -511,19 +317,14 @@
 
 .download-certificate-button:hover {
   color: #1d4ed8;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eaf2ff,
-      #dbeafe
-    );
-
+  background: linear-gradient(
+    145deg,
+    #eaf2ff,
+    #dbeafe
+  );
   border-color: #bfdbfe;
-
   box-shadow:
     0 7px 16px rgba(37, 99, 235, 0.10);
-
   transform: translateY(-1px);
 }
 
@@ -533,51 +334,31 @@
 
 .download-certificate-button:focus-visible {
   outline: 3px solid rgba(37, 99, 235, 0.18);
-
   outline-offset: 2px;
 }
-
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
 
 .vaccination-history-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding: 62px 20px 42px;
-
   text-align: center;
 }
-
-
-/* =========================================================
-   EMPTY ICON
-   ========================================================= */
 
 .vaccination-history-empty-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 56px;
   height: 56px;
-
   color: #2563eb;
-
-  background:
-    linear-gradient(
-      145deg,
-      #f3f7ff,
-      #e8f1ff
-    );
-
+  background: linear-gradient(
+    145deg,
+    #f3f7ff,
+    #e8f1ff
+  );
   border: 1px solid #d5e4ff;
-
   border-radius: 15px;
-
   box-shadow:
     0 7px 18px rgba(37, 99, 235, 0.08);
 }
@@ -587,78 +368,41 @@
   height: 24px;
 }
 
-
-/* =========================================================
-   EMPTY TITLE
-   ========================================================= */
-
 .vaccination-history-empty h3 {
   margin: 18px 0 7px;
-
   color: #172033;
-
   font-size: 17px;
   font-weight: 750;
-
   line-height: 1.35;
-
   letter-spacing: -0.015em;
 }
 
-
-/* =========================================================
-   EMPTY DESCRIPTION
-   ========================================================= */
-
 .vaccination-history-empty p {
   max-width: 430px;
-
   margin: 0;
-
   color: #94a3b8;
-
   font-size: 13px;
   font-weight: 500;
-
   line-height: 1.55;
 }
 
-
-/* =========================================================
-   ERROR
-   ========================================================= */
-
 .vaccination-history-error {
   position: relative;
-
   padding: 16px 18px;
-
   color: #b91c1c;
-
-  background:
-    linear-gradient(
-      135deg,
-      #fff7f7,
-      #fff1f2
-    );
-
+  background: linear-gradient(
+    135deg,
+    #fff7f7,
+    #fff1f2
+  );
   border: 1px solid #fecaca;
-
   border-radius: 12px;
-
   font-size: 14px;
   font-weight: 550;
-
   line-height: 1.5;
-
   box-shadow:
     0 5px 16px rgba(185, 28, 28, 0.045);
 }
-
-
-/* =========================================================
-   TABLE SCROLLBAR
-   ========================================================= */
 
 .vaccination-history-table-wrapper::-webkit-scrollbar {
   height: 7px;
@@ -670,7 +414,6 @@
 
 .vaccination-history-table-wrapper::-webkit-scrollbar-thumb {
   background: #cbd5e1;
-
   border-radius: 999px;
 }
 
@@ -678,25 +421,13 @@
   background: #94a3b8;
 }
 
-
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
 .vaccination-history-table-wrapper:focus-within {
   border-color: #cfe0ff;
-
   box-shadow:
     0 0 0 3px rgba(37, 99, 235, 0.06);
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
 @media (prefers-reduced-motion: reduce) {
-
   .vaccination-history-card,
   .vaccination-history-icon,
   .vaccination-history-vaccine,
@@ -708,13 +439,7 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
-
 @media (max-width: 900px) {
-
   .vaccination-history {
     max-width: 100%;
   }
@@ -729,7 +454,6 @@
 
   .vaccination-history-card {
     padding: 28px;
-
     border-radius: 18px;
   }
 
@@ -743,32 +467,23 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
 @media (max-width: 700px) {
-
   .vaccination-history-header {
     margin-bottom: 26px;
   }
 
   .vaccination-history-header h1 {
     font-size: 29px;
-
     letter-spacing: -0.035em;
   }
 
   .vaccination-history-header p {
     margin-top: 9px;
-
     font-size: 14px;
   }
 
   .vaccination-history-card {
     padding: 23px;
-
     border-radius: 16px;
   }
 
@@ -779,14 +494,12 @@
 
   .vaccination-history-card-header {
     gap: 14px;
-
     padding-bottom: 22px;
   }
 
   .vaccination-history-icon {
     width: 52px;
     height: 52px;
-
     border-radius: 14px;
   }
 
@@ -805,7 +518,6 @@
 
   .vaccination-history-table-wrapper {
     margin-top: 22px;
-
     border-radius: 13px;
   }
 
@@ -821,12 +533,8 @@
     padding: 16px 15px;
   }
 
-
-  /* Certificate button */
-
   .vaccination-history-certificate {
     justify-content: flex-start;
-
     margin-top: 18px;
   }
 
@@ -835,22 +543,14 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — SMALL MOBILE
-   ========================================================= */
-
 @media (max-width: 450px) {
-
   .vaccination-history-card-header {
     align-items: flex-start;
-
     gap: 12px;
   }
 
   .vaccination-history-card {
     padding: 19px;
-
     border-radius: 15px;
   }
 
@@ -862,7 +562,6 @@
   .vaccination-history-icon {
     width: 47px;
     height: 47px;
-
     border-radius: 13px;
   }
 
@@ -877,13 +576,11 @@
 
   .vaccination-history-card-title p {
     margin-top: 3px;
-
     font-size: 11.5px;
   }
 
   .vaccination-history-table-wrapper {
     margin-top: 19px;
-
     border-radius: 12px;
   }
 
@@ -893,13 +590,11 @@
 
   .vaccination-history-table th {
     padding: 13px 14px;
-
     font-size: 10px;
   }
 
   .vaccination-history-table td {
     padding: 15px 14px;
-
     font-size: 13.5px;
   }
 
@@ -923,20 +618,12 @@
 
   .download-certificate-button {
     min-height: 40px;
-
     padding: 9px 14px;
-
     font-size: 12.5px;
   }
 }
 
-
-/* =========================================================
-   VERY SMALL DEVICES
-   ========================================================= */
-
 @media (max-width: 360px) {
-
   .vaccination-history-header h1 {
     font-size: 25px;
   }

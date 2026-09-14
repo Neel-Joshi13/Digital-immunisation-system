@@ -1,45 +1,25 @@
-/* =========================================================
-   PATIENT PORTAL
-   ========================================================= */
-
 .patient-layout {
   min-height: 100vh;
   background: #f4f7fb;
   color: #172033;
 }
 
-
-/* =========================================================
-   TOPBAR
-   ========================================================= */
-
 .patient-topbar {
   position: sticky;
   top: 0;
   z-index: 100;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   height: 76px;
   padding: 0 34px;
-
   background: rgba(255, 255, 255, 0.96);
-
   border-bottom: 1px solid #e5eaf1;
-
   box-shadow:
     0 4px 18px rgba(15, 23, 42, 0.045);
-
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
-
-
-/* =========================================================
-   BRAND
-   ========================================================= */
 
 .patient-brand {
   display: flex;
@@ -51,14 +31,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 42px;
   height: 42px;
-
   color: #2563eb;
-
   background: #eff6ff;
-
   border: 1px solid #dbeafe;
   border-radius: 12px;
 }
@@ -70,51 +46,33 @@
 
 .patient-brand-title {
   color: #101b33;
-
   font-size: 18px;
   font-weight: 800;
-
   line-height: 1.2;
-
   letter-spacing: -0.025em;
 }
 
 .patient-brand-subtitle {
   margin-top: 2px;
-
   color: #94a3b8;
-
   font-size: 10px;
   font-weight: 600;
-
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
-
-/* =========================================================
-   LOGOUT
-   ========================================================= */
 
 .patient-logout {
   display: flex;
   align-items: center;
   gap: 8px;
-
   height: 39px;
-
   padding: 0 15px;
-
   color: #64748b;
-
   background: white;
-
   border: 1px solid #dbe2ea;
   border-radius: 9px;
-
   font-size: 13px;
   font-weight: 650;
-
   transition:
     color 0.2s ease,
     background 0.2s ease,
@@ -129,55 +87,32 @@
 
 .patient-logout:hover {
   color: #dc2626;
-
   background: #fff5f5;
-
   border-color: #fecaca;
-
   transform: translateY(-1px);
 }
 
-
-/* =========================================================
-   BODY
-   ========================================================= */
-
 .patient-body {
   display: flex;
-
   min-height: calc(100vh - 76px);
 }
-
-
-/* =========================================================
-   SIDEBAR
-   ========================================================= */
 
 .patient-sidebar {
   display: flex;
   flex-direction: column;
-
   width: 245px;
-
   flex-shrink: 0;
-
   padding: 30px 16px;
-
   background: #ffffff;
-
   border-right: 1px solid #e5eaf1;
 }
 
 .patient-sidebar-label {
   margin: 0 12px 12px;
-
   color: #94a3b8;
-
   font-size: 10px;
   font-weight: 800;
-
   letter-spacing: 0.1em;
-
   text-transform: uppercase;
 }
 
@@ -189,25 +124,16 @@
 
 .patient-nav-link {
   position: relative;
-
   display: flex;
   align-items: center;
-
   gap: 12px;
-
   min-height: 46px;
-
   padding: 0 13px;
-
   color: #64748b;
-
   border-radius: 10px;
-
   text-decoration: none;
-
   font-size: 13.5px;
   font-weight: 600;
-
   transition:
     color 0.2s ease,
     background 0.2s ease,
@@ -216,28 +142,21 @@
 
 .patient-nav-link:hover {
   color: #2563eb;
-
   background: #f3f7ff;
 }
 
 .patient-nav-link.active {
   color: #2563eb;
-
   background: #eff6ff;
 }
 
 .patient-nav-link.active::before {
   content: "";
-
   position: absolute;
-
   left: 0;
-
   width: 3px;
   height: 23px;
-
   background: #2563eb;
-
   border-radius: 0 4px 4px 0;
 }
 
@@ -245,10 +164,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 21px;
   height: 21px;
-
   flex-shrink: 0;
 }
 
@@ -257,29 +174,18 @@
   height: 18px;
 }
 
-
-/* =========================================================
-   SIDEBAR FOOTER
-   ========================================================= */
-
 .patient-sidebar-footer {
   margin-top: auto;
-
   padding: 18px 4px 0;
 }
 
 .patient-help-card {
   display: flex;
   align-items: flex-start;
-
   gap: 10px;
-
   padding: 14px;
-
   background: #f8fafc;
-
   border: 1px solid #edf1f5;
-
   border-radius: 11px;
 }
 
@@ -287,110 +193,69 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 25px;
   height: 25px;
-
   flex-shrink: 0;
-
   color: #2563eb;
-
   background: #eff6ff;
-
   border-radius: 50%;
-
   font-size: 13px;
   font-weight: 800;
 }
 
 .patient-help-card strong {
   display: block;
-
   margin-bottom: 2px;
-
   color: #334155;
-
   font-size: 11.5px;
 }
 
 .patient-help-card span {
   display: block;
-
   color: #94a3b8;
-
   font-size: 10px;
-
   line-height: 1.4;
 }
 
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
 .patient-main {
   flex: 1;
-
   min-width: 0;
-
   padding: 40px 44px 70px;
 }
 
-
-/* =========================================================
-   PAGE
-   ========================================================= */
-
 .patient-page {
   width: min(1180px, 100%);
-
   margin: 0 auto;
 }
-
-
-/* =========================================================
-   PAGE HEADER
-   ========================================================= */
 
 .patient-page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 30px;
 }
 
 .patient-eyebrow {
   margin-bottom: 7px;
-
   color: #2563eb;
-
   font-size: 10px;
   font-weight: 800;
-
   letter-spacing: 0.11em;
-
   text-transform: uppercase;
 }
 
 .patient-page-header h1 {
   margin: 0;
-
   color: #101b33;
-
   font-size: 31px;
   font-weight: 800;
-
   line-height: 1.2;
-
   letter-spacing: -0.035em;
 }
 
 .patient-page-header p {
   margin: 9px 0 0;
-
   color: #718096;
-
   font-size: 13.5px;
 }
 
@@ -398,60 +263,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 56px;
   height: 56px;
-
   color: #2563eb;
-
-  background:
-    linear-gradient(
-      145deg,
-      #eff6ff,
-      #dbeafe
-    );
-
+  background: linear-gradient(
+    145deg,
+    #eff6ff,
+    #dbeafe
+  );
   border: 1px solid #cfe1ff;
-
   border-radius: 50%;
-
   font-size: 19px;
   font-weight: 800;
-
   box-shadow:
     0 7px 20px rgba(37, 99, 235, 0.12);
 }
 
-
-/* =========================================================
-   STAT CARDS
-   ========================================================= */
-
 .patient-stat-grid {
   display: grid;
-
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
-
   gap: 17px;
-
   margin-bottom: 22px;
 }
 
 .patient-stat-card {
   display: flex;
   align-items: center;
-
   gap: 14px;
-
   padding: 18px 20px;
-
   background: #ffffff;
-
   border: 1px solid #e5eaf1;
-
   border-radius: 13px;
-
   box-shadow:
     0 4px 16px rgba(15, 23, 42, 0.035);
 }
@@ -460,12 +303,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 43px;
   height: 43px;
-
   flex-shrink: 0;
-
   border-radius: 11px;
 }
 
@@ -491,58 +331,35 @@
 
 .patient-stat-card span {
   display: block;
-
   margin-bottom: 2px;
-
   color: #94a3b8;
-
   font-size: 10.5px;
   font-weight: 650;
 }
 
 .patient-stat-card strong {
   color: #26344d;
-
   font-size: 14px;
   font-weight: 750;
 }
 
-
-/* =========================================================
-   DASHBOARD GRID
-   ========================================================= */
-
 .patient-dashboard-grid {
   display: grid;
-
   grid-template-columns:
     repeat(2, minmax(0, 1fr));
-
   gap: 20px;
 }
-
-
-/* =========================================================
-   CARD
-   ========================================================= */
 
 .patient-card {
   display: flex;
   flex-direction: column;
-
   min-width: 0;
-
   padding: 25px;
-
   background: #ffffff;
-
   border: 1px solid #e5eaf1;
-
   border-radius: 15px;
-
   box-shadow:
     0 5px 20px rgba(15, 23, 42, 0.04);
-
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -550,7 +367,6 @@
 
 .patient-card:hover {
   transform: translateY(-2px);
-
   box-shadow:
     0 12px 28px rgba(15, 23, 42, 0.07);
 }
@@ -559,35 +375,24 @@
   grid-column: 1 / -1;
 }
 
-
-/* =========================================================
-   CARD HEADER
-   ========================================================= */
-
 .patient-card-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-
   margin-bottom: 23px;
 }
 
 .patient-card-header h2 {
   margin: 0;
-
   color: #172033;
-
   font-size: 17px;
   font-weight: 750;
-
   letter-spacing: -0.02em;
 }
 
 .patient-card-header p {
   margin: 5px 0 0;
-
   color: #94a3b8;
-
   font-size: 11.5px;
 }
 
@@ -595,14 +400,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 39px;
   height: 39px;
-
   color: #2563eb;
-
   background: #eff6ff;
-
   border-radius: 10px;
 }
 
@@ -621,16 +422,9 @@
   background: #fff7ed;
 }
 
-
-/* =========================================================
-   PROFILE DETAILS
-   ========================================================= */
-
 .patient-profile-details {
   display: grid;
-
   gap: 13px;
-
   margin-bottom: 22px;
 }
 
@@ -638,11 +432,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   gap: 20px;
-
   padding-bottom: 12px;
-
   border-bottom: 1px solid #f0f2f5;
 }
 
@@ -652,48 +443,32 @@
 
 .patient-detail span {
   color: #94a3b8;
-
   font-size: 11.5px;
 }
 
 .patient-detail strong {
   color: #334155;
-
   font-size: 12.5px;
   font-weight: 650;
-
   text-align: right;
 }
-
-
-/* =========================================================
-   CARD LINKS
-   ========================================================= */
 
 .patient-card-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-top: auto;
-
   padding-top: 17px;
-
   color: #2563eb;
-
   border-top: 1px solid #f0f2f5;
-
   text-decoration: none;
-
   font-size: 12px;
   font-weight: 700;
-
   transition: color 0.2s ease;
 }
 
 .patient-card-link span {
   font-size: 17px;
-
   transition:
     transform 0.2s ease;
 }
@@ -706,27 +481,15 @@
   transform: translateX(4px);
 }
 
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
 .patient-empty-state {
   display: flex;
   align-items: center;
-
   gap: 13px;
-
   min-height: 90px;
-
   margin-bottom: 18px;
-
   padding: 16px;
-
   background: #f8fafc;
-
   border: 1px solid #edf1f5;
-
   border-radius: 11px;
 }
 
@@ -734,53 +497,34 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 36px;
   height: 36px;
-
   flex-shrink: 0;
-
   color: #16a34a;
-
   background: #dcfce7;
-
   border-radius: 50%;
-
   font-size: 15px;
   font-weight: 800;
 }
 
 .patient-empty-state strong {
   display: block;
-
   margin-bottom: 3px;
-
   color: #334155;
-
   font-size: 12.5px;
 }
 
 .patient-empty-state p {
   margin: 0;
-
   color: #94a3b8;
-
   font-size: 11px;
-
   line-height: 1.5;
 }
-
-
-/* =========================================================
-   APPOINTMENTS
-   ========================================================= */
 
 .patient-appointment-content {
   display: flex;
   align-items: center;
-
   gap: 15px;
-
   margin-bottom: 20px;
 }
 
@@ -788,75 +532,48 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 44px;
   height: 44px;
-
   flex-shrink: 0;
-
   color: #ea580c;
-
   background: #fff7ed;
-
   border: 1px solid #fed7aa;
-
   border-radius: 11px;
-
   font-size: 22px;
   font-weight: 500;
 }
 
 .patient-appointment-content strong {
   display: block;
-
   margin-bottom: 4px;
-
   color: #334155;
-
   font-size: 13px;
 }
 
 .patient-appointment-content p {
   margin: 0;
-
   color: #94a3b8;
-
   font-size: 11.5px;
 }
-
-
-/* =========================================================
-   PRIMARY BUTTON
-   ========================================================= */
 
 .patient-primary-button {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-
   width: 185px;
-
   padding: 10px 14px;
-
   color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #1d4ed8
-    );
-
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
   border-radius: 9px;
-
   text-decoration: none;
-
   font-size: 12px;
   font-weight: 700;
-
   box-shadow:
     0 6px 15px rgba(37, 99, 235, 0.18);
-
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -864,16 +581,13 @@
 
 .patient-primary-button span {
   font-size: 16px;
-
   transition:
     transform 0.2s ease;
 }
 
 .patient-primary-button:hover {
   color: white;
-
   transform: translateY(-1px);
-
   box-shadow:
     0 9px 20px rgba(37, 99, 235, 0.25);
 }
@@ -882,64 +596,40 @@
   transform: translateX(3px);
 }
 
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
 .patient-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   min-height: 400px;
-
   color: #94a3b8;
 }
 
 .patient-loading-spinner {
   width: 30px;
   height: 30px;
-
   margin-bottom: 13px;
-
   border:
     3px solid #dbeafe;
-
   border-top-color: #2563eb;
-
   border-radius: 50%;
-
   animation:
     patient-spin 0.7s linear infinite;
 }
 
 .patient-loading p {
   margin: 0;
-
   font-size: 12px;
 }
-
-
-/* =========================================================
-   ERROR
-   ========================================================= */
 
 .patient-error {
   display: flex;
   align-items: flex-start;
-
   gap: 12px;
-
   padding: 17px;
-
   color: #b91c1c;
-
   background: #fef2f2;
-
   border: 1px solid #fecaca;
-
   border-radius: 11px;
 }
 
@@ -947,51 +637,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 25px;
   height: 25px;
-
   flex-shrink: 0;
-
   color: white;
-
   background: #dc2626;
-
   border-radius: 50%;
-
   font-size: 13px;
   font-weight: 800;
 }
 
 .patient-error strong {
   display: block;
-
   margin-bottom: 2px;
-
   font-size: 12px;
 }
 
 .patient-error p {
   margin: 0;
-
   font-size: 11px;
 }
-
-
-/* =========================================================
-   ANIMATION
-   ========================================================= */
 
 @keyframes patient-spin {
   to {
     transform: rotate(360deg);
   }
 }
-
-
-/* =========================================================
-   RESPONSIVE
-   ========================================================= */
 
 @media (max-width: 1000px) {
   .patient-main {
@@ -1003,11 +674,9 @@
   }
 }
 
-
 @media (max-width: 800px) {
   .patient-topbar {
     height: 70px;
-
     padding: 0 20px;
   }
 
@@ -1021,9 +690,7 @@
 
   .patient-sidebar {
     width: 100%;
-
     padding: 10px 15px;
-
     border-right: none;
     border-bottom: 1px solid #e5eaf1;
   }
@@ -1035,15 +702,12 @@
 
   .patient-sidebar-nav {
     flex-direction: row;
-
     overflow-x: auto;
-
     padding: 2px;
   }
 
   .patient-nav-link {
     flex-shrink: 0;
-
     padding: 0 13px;
   }
 
@@ -1067,7 +731,6 @@
     grid-column: auto;
   }
 }
-
 
 @media (max-width: 550px) {
   .patient-topbar {
@@ -1105,14 +768,12 @@
 
   .patient-page-header p {
     max-width: 270px;
-
     font-size: 12px;
   }
 
   .patient-avatar {
     width: 45px;
     height: 45px;
-
     font-size: 16px;
   }
 

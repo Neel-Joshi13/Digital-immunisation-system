@@ -1,25 +1,12 @@
-/* =========================================================
-   APPOINTMENTS PAGE
-   Premium / Modern / Production-ready
-   CSS ONLY — Existing selectors preserved
-   ========================================================= */
-
 .appointments-page {
   width: 100%;
   max-width: 1100px;
 }
 
-
-/* =========================================================
-   PAGE HEADER
-   ========================================================= */
-
 .appointments-header {
   display: flex;
   align-items: center;
-
   gap: 18px;
-
   margin-bottom: 34px;
 }
 
@@ -45,7 +32,6 @@
     );
 
   border: 1px solid #cfe0ff;
-
   border-radius: 16px;
 
   box-shadow:
@@ -98,14 +84,8 @@
   line-height: 1.6;
 }
 
-
-/* =========================================================
-   MESSAGES
-   ========================================================= */
-
 .appointments-success {
   margin-bottom: 20px;
-
   padding: 16px 18px;
 
   color: #166534;
@@ -118,7 +98,6 @@
     );
 
   border: 1px solid #bbf7d0;
-
   border-radius: 12px;
 
   font-size: 14px;
@@ -132,7 +111,6 @@
 
 .appointments-error {
   margin-bottom: 20px;
-
   padding: 16px 18px;
 
   color: #b91c1c;
@@ -145,7 +123,6 @@
     );
 
   border: 1px solid #fecaca;
-
   border-radius: 12px;
 
   font-size: 14px;
@@ -156,11 +133,6 @@
   box-shadow:
     0 5px 16px rgba(185, 28, 28, 0.045);
 }
-
-
-/* =========================================================
-   APPOINTMENT HISTORY CARD
-   ========================================================= */
 
 .appointments-card {
   position: relative;
@@ -175,7 +147,6 @@
     );
 
   border: 1px solid #e3e9f2;
-
   border-radius: 20px;
 
   box-shadow:
@@ -189,11 +160,6 @@
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
-
-
-/*
- * Subtle top highlight
- */
 
 .appointments-card::before {
   content: "";
@@ -216,11 +182,6 @@
 
   pointer-events: none;
 }
-
-
-/* =========================================================
-   CARD HEADER
-   ========================================================= */
 
 .appointments-card-header {
   padding: 27px 30px;
@@ -252,11 +213,6 @@
   line-height: 1.45;
 }
 
-
-/* =========================================================
-   TABLE WRAPPER
-   ========================================================= */
-
 .appointments-table-wrapper {
   width: 100%;
 
@@ -269,14 +225,8 @@
   scrollbar-width: thin;
 }
 
-
-/* =========================================================
-   TABLE
-   ========================================================= */
-
 .appointments-table {
   width: 100%;
-
   min-width: 680px;
 
   border-collapse: separate;
@@ -286,11 +236,6 @@
 
   font-size: 14px;
 }
-
-
-/* =========================================================
-   TABLE HEADER
-   ========================================================= */
 
 .appointments-table th {
   padding: 15px 20px;
@@ -314,7 +259,6 @@
   letter-spacing: 0.085em;
 
   text-align: left;
-
   text-transform: uppercase;
 
   white-space: nowrap;
@@ -327,11 +271,6 @@
 .appointments-table th:last-child {
   border-top-right-radius: 0;
 }
-
-
-/* =========================================================
-   TABLE DATA
-   ========================================================= */
 
 .appointments-table td {
   padding: 18px 20px;
@@ -357,11 +296,6 @@
   border-bottom: none;
 }
 
-
-/* =========================================================
-   TABLE ROW
-   ========================================================= */
-
 .appointments-table tbody tr {
   transition:
     background 0.18s ease;
@@ -371,11 +305,6 @@
   background: #f8fbff;
 }
 
-
-/* =========================================================
-   APPOINTMENT DATE
-   ========================================================= */
-
 .appointment-date {
   color: #172033;
 
@@ -383,11 +312,6 @@
 
   white-space: nowrap;
 }
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
 
 .appointment-status {
   display: inline-flex;
@@ -418,9 +342,6 @@
   transform: translateY(-1px);
 }
 
-
-/* Scheduled */
-
 .appointment-status.scheduled {
   color: #1d4ed8;
 
@@ -436,9 +357,6 @@
   box-shadow:
     0 2px 6px rgba(37, 99, 235, 0.045);
 }
-
-
-/* Completed */
 
 .appointment-status.completed {
   color: #15803d;
@@ -456,9 +374,6 @@
     0 2px 6px rgba(21, 128, 61, 0.04);
 }
 
-
-/* Default */
-
 .appointment-status.default {
   color: #64748b;
 
@@ -472,11 +387,6 @@
   border: 1px solid #e2e8f0;
 }
 
-
-/* =========================================================
-   EMPTY STATE
-   ========================================================= */
-
 .appointments-empty {
   display: flex;
   flex-direction: column;
@@ -486,11 +396,6 @@
 
   text-align: center;
 }
-
-
-/* =========================================================
-   EMPTY ICON
-   ========================================================= */
 
 .appointments-empty-icon {
   display: flex;
@@ -512,7 +417,6 @@
     );
 
   border: 1px solid #d5e4ff;
-
   border-radius: 15px;
 
   box-shadow:
@@ -550,11 +454,6 @@
   line-height: 1.55;
 }
 
-
-/* =========================================================
-   BOOK APPOINTMENT CARD
-   ========================================================= */
-
 .book-appointment-card {
   position: relative;
 
@@ -574,7 +473,6 @@
     );
 
   border: 1px solid #e3e9f2;
-
   border-radius: 20px;
 
   box-shadow:
@@ -607,11 +505,6 @@
   pointer-events: none;
 }
 
-
-/* =========================================================
-   BOOK APPOINTMENT HEADER
-   ========================================================= */
-
 .book-appointment-header {
   display: flex;
   align-items: center;
@@ -622,11 +515,6 @@
 
   border-bottom: 1px solid #edf1f6;
 }
-
-
-/* =========================================================
-   BOOK APPOINTMENT ICON
-   ========================================================= */
 
 .book-appointment-icon {
   display: flex;
@@ -648,7 +536,6 @@
     );
 
   border: 1px solid #d5e4ff;
-
   border-radius: 13px;
 
   box-shadow:
@@ -684,11 +571,6 @@
   line-height: 1.45;
 }
 
-
-/* =========================================================
-   FORM
-   ========================================================= */
-
 .appointment-form {
   padding-top: 26px;
 }
@@ -711,11 +593,6 @@
   grid-column: 1 / -1;
 }
 
-
-/* =========================================================
-   FORM LABEL
-   ========================================================= */
-
 .appointment-field label {
   margin-bottom: 8px;
 
@@ -726,11 +603,6 @@
 
   line-height: 1.4;
 }
-
-
-/* =========================================================
-   FORM INPUTS
-   ========================================================= */
 
 .appointment-field input,
 .appointment-field select,
@@ -746,7 +618,6 @@
   background: #ffffff;
 
   border: 1px solid #dbe2ea;
-
   border-radius: 10px;
 
   outline: none;
@@ -795,11 +666,6 @@
   color: #94a3b8;
 }
 
-
-/* =========================================================
-   FORM FOOTER
-   ========================================================= */
-
 .appointment-form-footer {
   display: flex;
   justify-content: flex-end;
@@ -810,11 +676,6 @@
 
   border-top: 1px solid #edf1f6;
 }
-
-
-/* =========================================================
-   BOOK APPOINTMENT BUTTON
-   ========================================================= */
 
 .book-appointment-button {
   display: inline-flex;
@@ -837,7 +698,6 @@
     );
 
   border: 1px solid #2563eb;
-
   border-radius: 10px;
 
   cursor: pointer;
@@ -881,11 +741,6 @@
     0 3px 8px rgba(37, 99, 235, 0.14);
 }
 
-
-/* =========================================================
-   TABLE SCROLLBAR
-   ========================================================= */
-
 .appointments-table-wrapper::-webkit-scrollbar {
   height: 7px;
 }
@@ -904,11 +759,6 @@
   background: #94a3b8;
 }
 
-
-/* =========================================================
-   ACCESSIBILITY
-   ========================================================= */
-
 .appointment-field input:focus-visible,
 .appointment-field select:focus-visible,
 .appointment-field textarea:focus-visible,
@@ -922,13 +772,7 @@
     0 5px 14px rgba(37, 99, 235, 0.14);
 }
 
-
-/* =========================================================
-   REDUCED MOTION
-   ========================================================= */
-
 @media (prefers-reduced-motion: reduce) {
-
   .appointments-header-icon,
   .appointments-card,
   .appointment-status,
@@ -940,13 +784,7 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — TABLET
-   ========================================================= */
-
 @media (max-width: 900px) {
-
   .appointments-page {
     max-width: 100%;
   }
@@ -979,13 +817,7 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — MOBILE
-   ========================================================= */
-
 @media (max-width: 750px) {
-
   .appointments-header {
     gap: 14px;
 
@@ -1110,13 +942,7 @@
   }
 }
 
-
-/* =========================================================
-   RESPONSIVE — SMALL MOBILE
-   ========================================================= */
-
 @media (max-width: 500px) {
-
   .appointments-header {
     align-items: flex-start;
   }
@@ -1195,13 +1021,7 @@
   }
 }
 
-
-/* =========================================================
-   VERY SMALL DEVICES
-   ========================================================= */
-
 @media (max-width: 360px) {
-
   .appointments-header h1 {
     font-size: 25px;
   }
@@ -1227,4 +1047,10 @@
     left: 16px;
     right: 16px;
   }
+}
+
+.appointment-status.missed {
+  background: #fee2e2;
+  color: #b91c1c;
+  border-color: #fecaca;
 }

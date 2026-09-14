@@ -6,9 +6,13 @@ import {
   createAppointment,
 } from "../services/api";
 
+import { useLanguage } from "../context/LanguageContext";
+
 import "../styles/appointments.css";
 
 function Appointments() {
+  const { language } = useLanguage();
+
   const [appointments, setAppointments] = useState([]);
   const [centres, setCentres] = useState([]);
 
@@ -19,6 +23,70 @@ function Appointments() {
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
+  const text = {
+    en: {
+      title: "My Appointments",
+      subtitle:
+        "Book and manage your vaccination appointments",
+      success: "Appointment booked successfully.",
+      history: "Appointment History",
+      historyDescription:
+        "View your scheduled and completed appointments.",
+      noAppointments: "No appointments found",
+      noAppointmentsDescription:
+        "You do not have any vaccination appointments yet.",
+      date: "Date",
+      time: "Time",
+      centre: "Centre",
+      reason: "Reason",
+      status: "Status",
+      scheduled: "SCHEDULED",
+      completed: "COMPLETED",
+      missed: "MISSED",
+      bookTitle: "Book an Appointment",
+      bookDescription:
+        "Schedule your next vaccination appointment.",
+      healthcareCentre: "Healthcare Centre",
+      selectCentre: "Select a healthcare centre",
+      appointmentReason: "Reason",
+      reasonPlaceholder: "Reason for appointment",
+      bookAppointment: "Book Appointment",
+      notAvailable: "N/A",
+    },
+
+    hi: {
+      title: "मेरे अपॉइंटमेंट",
+      subtitle:
+        "अपने टीकाकरण अपॉइंटमेंट बुक और प्रबंधित करें",
+      success: "अपॉइंटमेंट सफलतापूर्वक बुक किया गया।",
+      history: "अपॉइंटमेंट इतिहास",
+      historyDescription:
+        "अपने निर्धारित और पूरे किए गए अपॉइंटमेंट देखें।",
+      noAppointments: "कोई अपॉइंटमेंट नहीं मिला",
+      noAppointmentsDescription:
+        "आपके पास अभी कोई टीकाकरण अपॉइंटमेंट नहीं है।",
+      date: "तारीख",
+      time: "समय",
+      centre: "केंद्र",
+      reason: "कारण",
+      status: "स्थिति",
+      scheduled: "निर्धारित",
+      completed: "पूरा हुआ",
+      missed: "छूट गया",
+      bookTitle: "अपॉइंटमेंट बुक करें",
+      bookDescription:
+        "अपना अगला टीकाकरण अपॉइंटमेंट निर्धारित करें।",
+      healthcareCentre: "स्वास्थ्य केंद्र",
+      selectCentre: "स्वास्थ्य केंद्र चुनें",
+      appointmentReason: "कारण",
+      reasonPlaceholder: "अपॉइंटमेंट का कारण",
+      bookAppointment: "अपॉइंटमेंट बुक करें",
+      notAvailable: "उपलब्ध नहीं",
+    },
+  };
+
+  const currentText = text[language];
 
   async function loadAppointments() {
     try {
@@ -57,7 +125,7 @@ function Appointments() {
         reason
       );
 
-      setMessage("Appointment booked successfully.");
+      setMessage(currentText.success);
 
       setCentreId("");
       setAppointmentDate("");
@@ -68,6 +136,55 @@ function Appointments() {
     } catch (error) {
       setError(error.message);
     }
+  }
+
+  function getAppointmentStatus(appointment) {
+    const storedStatus =
+      appointment.status || "N/A";
+
+    const normalizedStatus =
+      storedStatus.toLowerCase();
+
+    if (normalizedStatus === "scheduled") {
+      if (
+        appointment.appointment_date &&
+        appointment.appointment_time
+      ) {
+        const appointmentDateTime = new Date(
+          `${appointment.appointment_date}T${appointment.appointment_time}`
+        );
+
+        const now = new Date();
+
+        if (
+          !Number.isNaN(appointmentDateTime.getTime()) &&
+          appointmentDateTime < now
+        ) {
+          return "MISSED";
+        }
+      }
+    }
+
+    return storedStatus;
+  }
+
+  function getStatusLabel(status) {
+    const normalizedStatus =
+      status.toLowerCase();
+
+    if (normalizedStatus === "scheduled") {
+      return currentText.scheduled;
+    }
+
+    if (normalizedStatus === "completed") {
+      return currentText.completed;
+    }
+
+    if (normalizedStatus === "missed") {
+      return currentText.missed;
+    }
+
+    return status;
   }
 
   return (
@@ -84,7 +201,13 @@ function Appointments() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <rect x="3" y="4" width="18" height="18" rx="3" />
+            <rect
+              x="3"
+              y="4"
+              width="18"
+              height="18"
+              rx="3"
+            />
 
             <line x1="16" y1="2" x2="16" y2="6" />
             <line x1="8" y1="2" x2="8" y2="6" />
@@ -97,10 +220,10 @@ function Appointments() {
         </div>
 
         <div>
-          <h1>My Appointments</h1>
+          <h1>{currentText.title}</h1>
 
           <p>
-            Book and manage your vaccination appointments
+            {currentText.subtitle}
           </p>
         </div>
 
@@ -122,10 +245,10 @@ function Appointments() {
 
         <div className="appointments-card-header">
           <div>
-            <h2>Appointment History</h2>
+            <h2>{currentText.history}</h2>
 
             <p>
-              View your scheduled and completed appointments.
+              {currentText.historyDescription}
             </p>
           </div>
         </div>
@@ -133,6 +256,7 @@ function Appointments() {
         {appointments.length === 0 ? (
 
           <div className="appointments-empty">
+
             <div className="appointments-empty-icon">
               <svg
                 viewBox="0 0 24 24"
@@ -160,11 +284,12 @@ function Appointments() {
               </svg>
             </div>
 
-            <h3>No appointments found</h3>
+            <h3>{currentText.noAppointments}</h3>
 
             <p>
-              You do not have any vaccination appointments yet.
+              {currentText.noAppointmentsDescription}
             </p>
+
           </div>
 
         ) : (
@@ -175,11 +300,11 @@ function Appointments() {
 
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Centre</th>
-                  <th>Reason</th>
-                  <th>Status</th>
+                  <th>{currentText.date}</th>
+                  <th>{currentText.time}</th>
+                  <th>{currentText.centre}</th>
+                  <th>{currentText.reason}</th>
+                  <th>{currentText.status}</th>
                 </tr>
               </thead>
 
@@ -188,13 +313,15 @@ function Appointments() {
                 {appointments.map((appointment) => {
 
                   const status =
-                    appointment.status || "N/A";
+                    getAppointmentStatus(appointment);
 
                   const statusClass =
                     status.toLowerCase() === "completed"
                       ? "completed"
                       : status.toLowerCase() === "scheduled"
                       ? "scheduled"
+                      : status.toLowerCase() === "missed"
+                      ? "missed"
                       : "default";
 
                   return (
@@ -217,14 +344,15 @@ function Appointments() {
                       </td>
 
                       <td>
-                        {appointment.reason || "N/A"}
+                        {appointment.reason ||
+                          currentText.notAvailable}
                       </td>
 
                       <td>
                         <span
                           className={`appointment-status ${statusClass}`}
                         >
-                          {status}
+                          {getStatusLabel(status)}
                         </span>
                       </td>
 
@@ -273,10 +401,10 @@ function Appointments() {
           </div>
 
           <div>
-            <h2>Book an Appointment</h2>
+            <h2>{currentText.bookTitle}</h2>
 
             <p>
-              Schedule your next vaccination appointment.
+              {currentText.bookDescription}
             </p>
           </div>
 
@@ -292,7 +420,7 @@ function Appointments() {
             <div className="appointment-field appointment-field-full">
 
               <label htmlFor="centre">
-                Healthcare Centre
+                {currentText.healthcareCentre}
               </label>
 
               <select
@@ -304,7 +432,7 @@ function Appointments() {
                 required
               >
                 <option value="">
-                  Select a healthcare centre
+                  {currentText.selectCentre}
                 </option>
 
                 {centres.map((centre) => (
@@ -322,7 +450,7 @@ function Appointments() {
             <div className="appointment-field">
 
               <label htmlFor="appointment-date">
-                Date
+                {currentText.date}
               </label>
 
               <input
@@ -340,7 +468,7 @@ function Appointments() {
             <div className="appointment-field">
 
               <label htmlFor="appointment-time">
-                Time
+                {currentText.time}
               </label>
 
               <input
@@ -358,7 +486,7 @@ function Appointments() {
             <div className="appointment-field appointment-field-full">
 
               <label htmlFor="reason">
-                Reason
+                {currentText.appointmentReason}
               </label>
 
               <textarea
@@ -367,7 +495,7 @@ function Appointments() {
                 onChange={(event) =>
                   setReason(event.target.value)
                 }
-                placeholder="Reason for appointment"
+                placeholder={currentText.reasonPlaceholder}
                 required
               />
 
@@ -393,7 +521,7 @@ function Appointments() {
                 <line x1="5" y1="12" x2="19" y2="12" />
               </svg>
 
-              Book Appointment
+              {currentText.bookAppointment}
             </button>
 
           </div>

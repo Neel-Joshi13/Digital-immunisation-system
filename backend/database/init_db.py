@@ -2,18 +2,17 @@ from sqlalchemy import inspect, text
 
 from database.base import Base
 from database.connection import engine
-
-from database.models.user import User
-from database.models.patient import Patient
-from database.models.vaccine import Vaccine
-from database.models.immunisation import ImmunisationRecord
-from database.models.healthcare_centre import HealthcareCentre
 from database.models.appointment import Appointment
+from database.models.healthcare_centre import HealthcareCentre
+from database.models.immunisation import ImmunisationRecord
+from database.models.notification import Notification
+from database.models.patient import Patient
+from database.models.user import User
 from database.models.vaccination_schedule import VaccinationSchedule
+from database.models.vaccine import Vaccine
 
 
 def create_tables():
-    # Create tables that do not already exist.
     Base.metadata.create_all(bind=engine)
 
     inspector = inspect(engine)
@@ -24,7 +23,6 @@ def create_tables():
     }
 
     with engine.begin() as connection:
-
         if "source_name" not in vaccine_columns:
             connection.execute(
                 text(

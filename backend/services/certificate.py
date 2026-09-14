@@ -5,19 +5,18 @@ import os
 import uuid
 
 import qrcode
-
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import mm
 from reportlab.platypus import (
-    SimpleDocTemplate,
+    Image,
     Paragraph,
+    SimpleDocTemplate,
     Spacer,
     Table,
     TableStyle,
-    Image,
 )
 
 
@@ -36,7 +35,6 @@ def create_certificate_token(
     patient_id: int,
     immunisation_ids: list[int],
 ) -> str:
-
     records = ",".join(
         str(record_id)
         for record_id in sorted(immunisation_ids)
@@ -58,7 +56,6 @@ def verify_certificate_token(
     immunisation_ids: list[int],
     token: str,
 ) -> bool:
-
     expected = create_certificate_token(
         patient_id,
         immunisation_ids,
@@ -75,7 +72,6 @@ def generate_certificate_pdf(
     immunisations,
     certificate_token: str,
 ) -> bytes:
-
     buffer = io.BytesIO()
 
     document = SimpleDocTemplate(
@@ -230,7 +226,6 @@ def generate_certificate_pdf(
     ]
 
     for record in immunisations:
-
         vaccination_data.append(
             [
                 record.vaccine.name,

@@ -4,10 +4,10 @@ import re
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from database.models.patient import Patient
-from database.models.vaccine import Vaccine
 from database.models.immunisation import ImmunisationRecord
+from database.models.patient import Patient
 from database.models.vaccination_schedule import VaccinationSchedule
+from database.models.vaccine import Vaccine
 
 
 def calculate_age_in_days(
@@ -18,33 +18,17 @@ def calculate_age_in_days(
 
 
 def parse_recommended_age(age_text: str | None):
-    """
-    Convert common vaccination age descriptions into
-    an approximate number of days.
-
-    Examples:
-        6 weeks
-        10 weeks
-        14 weeks
-        6 months
-        9 months
-        12 months
-        16 months
-    """
-
     if not age_text:
         return None
 
     text = age_text.lower().strip()
 
-    # Range such as "16-24 months".
     range_match = re.search(
         r"(\d+)\s*[-–]\s*(\d+)\s*months?",
         text,
     )
 
     if range_match:
-        # Use the beginning of the recommended range.
         months = int(range_match.group(1))
         return months * 30
 
@@ -75,7 +59,6 @@ def parse_recommended_age(age_text: str | None):
         years = int(year_match.group(1))
         return years * 365
 
-    # Formats such as "birth", "at birth", "birth dose".
     if "birth" in text:
         return 0
 
@@ -121,7 +104,6 @@ def get_patient_missed_doses(
     results = []
 
     for schedule in schedules:
-
         vaccine = vaccine_map.get(schedule.vaccine_id)
 
         if vaccine is None:
@@ -132,25 +114,18 @@ def get_patient_missed_doses(
             schedule.dose_number,
         )
 
-        # Already administered.
         if key in completed:
             continue
 
         due_date = None
         reason = None
 
-        # -------------------------------------------------
-        # DOSE 1 / AGE-BASED SCHEDULE
-        # -------------------------------------------------
-
         if schedule.dose_number == 1:
-
             recommended_age_days = parse_recommended_age(
                 schedule.recommended_age
             )
 
             if recommended_age_days is not None:
-
                 due_date = (
                     patient.date_of_birth
                     + timedelta(
@@ -163,13 +138,7 @@ def get_patient_missed_doses(
                         "The recommended age for this "
                         "dose has passed."
                     )
-
-        # -------------------------------------------------
-        # SUBSEQUENT DOSES
-        # -------------------------------------------------
-
         else:
-
             previous_record = next(
                 (
                     record
@@ -183,9 +152,7 @@ def get_patient_missed_doses(
             )
 
             if previous_record:
-
                 if schedule.minimum_interval_days is not None:
-
                     due_date = (
                         previous_record.date_administered
                         + timedelta(
@@ -199,9 +166,7 @@ def get_patient_missed_doses(
                             "the previous dose has passed."
                         )
 
-    # Only return doses that are actually overdue.
         if reason:
-
             results.append(
                 {
                     "vaccine_id": vaccine.id,

@@ -1,15 +1,104 @@
 import { Link } from "react-router-dom";
+import { useLanguage } from "../context/LanguageContext";
 import "../styles/patient-dashboard.css";
 
 function PatientHome() {
+  const { language } = useLanguage();
+
+  const text = {
+    en: {
+      title: "Patient Dashboard",
+      welcome:
+        "Welcome to your Digital Immunisation dashboard.",
+
+      profile: "My Profile",
+      profileDescription:
+        "View and manage your personal information.",
+      openProfile: "Open Profile",
+
+      history: "Vaccination History",
+      historyDescription:
+        "View your vaccination records and immunisation history.",
+      viewHistory: "View History",
+
+      schedule: "Vaccination Schedule",
+      scheduleDescription:
+        "View recommended vaccines, doses and track your vaccination progress.",
+      viewSchedule: "View Schedule",
+
+      appointments: "Appointments",
+      appointmentsDescription:
+        "Book and view your upcoming vaccination appointments.",
+      viewAppointments: "View Appointments",
+
+      digitalRecord: "Digital Record",
+      digitalRecordValue:
+        "Your records are securely stored",
+
+      vaccinations: "Vaccinations",
+      vaccinationsValue:
+        "Keep track of your immunisations",
+
+      appointmentsInfo: "Appointments",
+      appointmentsValue:
+        "Manage your vaccination visits",
+
+      contact:
+        "Contact Us for any queries : neeljoshi.aws@gmail.com",
+    },
+
+    hi: {
+      title: "मरीज का डैशबोर्ड",
+      welcome:
+        "अपने डिजिटल टीकाकरण डैशबोर्ड में आपका स्वागत है।",
+
+      profile: "मेरी प्रोफ़ाइल",
+      profileDescription:
+        "अपनी व्यक्तिगत जानकारी देखें और प्रबंधित करें।",
+      openProfile: "प्रोफ़ाइल खोलें",
+
+      history: "टीकाकरण इतिहास",
+      historyDescription:
+        "अपने टीकाकरण रिकॉर्ड और टीकाकरण इतिहास देखें।",
+      viewHistory: "इतिहास देखें",
+
+      schedule: "टीकाकरण अनुसूची",
+      scheduleDescription:
+        "अनुशंसित टीके और खुराक देखें और अपने टीकाकरण की प्रगति पर नज़र रखें।",
+      viewSchedule: "अनुसूची देखें",
+
+      appointments: "अपॉइंटमेंट",
+      appointmentsDescription:
+        "अपने आगामी टीकाकरण अपॉइंटमेंट बुक करें और देखें।",
+      viewAppointments: "अपॉइंटमेंट देखें",
+
+      digitalRecord: "डिजिटल रिकॉर्ड",
+      digitalRecordValue:
+        "आपके रिकॉर्ड सुरक्षित रूप से संग्रहीत हैं",
+
+      vaccinations: "टीकाकरण",
+      vaccinationsValue:
+        "अपने टीकाकरण का रिकॉर्ड रखें",
+
+      appointmentsInfo: "अपॉइंटमेंट",
+      appointmentsValue:
+        "अपने टीकाकरण संबंधी मुलाकातों का प्रबंधन करें",
+
+      contact:
+        "किसी भी जानकारी के लिए हमसे संपर्क करें : neeljoshi.aws@gmail.com",
+    },
+  };
+
+  const currentText = text[language];
+
   return (
     <div className="patient-dashboard">
 
       <div className="patient-dashboard-header">
-        <h1>Patient Dashboard</h1>
+        <h1>{currentText.title}</h1>
 
         <p>
-          Welcome to your Digital Immunisation dashboard.
+          {currentText.welcome}
         </p>
       </div>
 
@@ -33,14 +122,14 @@ function PatientHome() {
             </svg>
           </div>
 
-          <h2>My Profile</h2>
+          <h2>{currentText.profile}</h2>
 
           <p>
-            View and manage your personal information.
+            {currentText.profileDescription}
           </p>
 
           <div className="patient-dashboard-card-link">
-            Open Profile
+            {currentText.openProfile}
             <span>→</span>
           </div>
         </Link>
@@ -73,14 +162,14 @@ function PatientHome() {
             </svg>
           </div>
 
-          <h2>Vaccination History</h2>
+          <h2>{currentText.history}</h2>
 
           <p>
-            View your vaccination records and immunisation history.
+            {currentText.historyDescription}
           </p>
 
           <div className="patient-dashboard-card-link">
-            View History
+            {currentText.viewHistory}
             <span>→</span>
           </div>
         </Link>
@@ -117,14 +206,14 @@ function PatientHome() {
             </svg>
           </div>
 
-          <h2>Vaccination Schedule</h2>
+          <h2>{currentText.schedule}</h2>
 
           <p>
-            View recommended vaccines, doses and track your vaccination progress.
+            {currentText.scheduleDescription}
           </p>
 
           <div className="patient-dashboard-card-link">
-            View Schedule
+            {currentText.viewSchedule}
             <span>→</span>
           </div>
         </Link>
@@ -159,14 +248,14 @@ function PatientHome() {
             </svg>
           </div>
 
-          <h2>Appointments</h2>
+          <h2>{currentText.appointments}</h2>
 
           <p>
-            Book and view your upcoming vaccination appointments.
+            {currentText.appointmentsDescription}
           </p>
 
           <div className="patient-dashboard-card-link">
-            View Appointments
+            {currentText.viewAppointments}
             <span>→</span>
           </div>
         </Link>
@@ -177,38 +266,38 @@ function PatientHome() {
 
         <div className="patient-dashboard-info-card">
           <span className="patient-dashboard-info-card-label">
-            Digital Record
+            {currentText.digitalRecord}
           </span>
 
           <span className="patient-dashboard-info-card-value">
-            Your records are securely stored
+            {currentText.digitalRecordValue}
           </span>
         </div>
 
         <div className="patient-dashboard-info-card">
           <span className="patient-dashboard-info-card-label">
-            Vaccinations
+            {currentText.vaccinations}
           </span>
 
           <span className="patient-dashboard-info-card-value">
-            Keep track of your immunisations
+            {currentText.vaccinationsValue}
           </span>
         </div>
 
         <div className="patient-dashboard-info-card">
           <span className="patient-dashboard-info-card-label">
-            Appointments
+            {currentText.appointmentsInfo}
           </span>
 
           <span className="patient-dashboard-info-card-value">
-            Manage your vaccination visits
+            {currentText.appointmentsValue}
           </span>
         </div>
 
       </div>
 
       <div className="patient-dashboard-contact">
-        Contact Us for any queries : neeljoshi.aws@gmail.com
+        {currentText.contact}
       </div>
 
     </div>

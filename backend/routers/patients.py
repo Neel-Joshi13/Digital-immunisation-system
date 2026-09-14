@@ -154,3 +154,43 @@ def get_my_missed_doses(
         db=db,
         patient=patient,
     )
+
+
+@router.get(
+    "/missed-doses",
+)
+def get_all_missed_doses(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_role("ADMIN")
+    ),
+):
+    patients = db.scalars(
+        select(Patient)
+        .order_by(
+            Patient.last_name,
+            Patient.first_name,
+        )
+    ).all()
+
+    alerts = []
+
+    for patient in patients:
+        missed_doses = get_patient_missed_doses(
+            db=db,
+            patient=patient,
+        )
+
+        if missed_doses:
+            alerts.append(
+                {
+                    "patient_id": patient.id,
+                    "user_id": patient.user_id,
+                    "first_name": patient.first_name,
+                    "last_name": patient.last_name,
+                    "phone": patient.phone,
+                    "missed_doses": missed_doses,
+                }
+            )
+
+    return alerts

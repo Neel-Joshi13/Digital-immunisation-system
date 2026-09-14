@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import AdminNav from "../components/AdminNav";
+import AdminMissedDoseAlert from "../components/AdminMissedDoseAlert";
 import "../styles/admin.css";
 
 function AdminHome() {
@@ -16,6 +17,8 @@ function AdminHome() {
             administration dashboard.
           </p>
         </div>
+
+        <AdminMissedDoseAlert />
 
         <section className="admin-section">
           <h2>Administration</h2>

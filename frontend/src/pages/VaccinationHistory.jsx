@@ -3,11 +3,56 @@ import {
   getMyImmunisations,
   downloadMyCertificate,
 } from "../services/api";
+import { useLanguage } from "../context/LanguageContext";
 import "../styles/vaccination-history.css";
 
 function VaccinationHistory() {
+  const { language } = useLanguage();
+
   const [records, setRecords] = useState([]);
   const [message, setMessage] = useState("");
+
+  const text = {
+    en: {
+      title: "Vaccination History",
+      subtitle:
+        "View your vaccination records and immunisation history.",
+      records: "Immunisation Records",
+      completedDoses: "Your completed vaccination doses",
+      noRecords: "No vaccination records",
+      noRecordsDescription:
+        "No vaccination records have been found for your account.",
+      vaccine: "Vaccine",
+      dose: "Dose",
+      dateAdministered: "Date Administered",
+      notAvailable: "N/A",
+      downloadCertificate:
+        "Download Vaccination Certificate",
+      certificateError:
+        "Failed to download vaccination certificate.",
+    },
+
+    hi: {
+      title: "टीकाकरण इतिहास",
+      subtitle:
+        "अपने टीकाकरण रिकॉर्ड और टीकाकरण इतिहास देखें।",
+      records: "टीकाकरण रिकॉर्ड",
+      completedDoses: "आपकी पूरी की गई टीकाकरण खुराक",
+      noRecords: "कोई टीकाकरण रिकॉर्ड नहीं",
+      noRecordsDescription:
+        "आपके खाते के लिए कोई टीकाकरण रिकॉर्ड नहीं मिला।",
+      vaccine: "टीका",
+      dose: "खुराक",
+      dateAdministered: "टीका लगाए जाने की तारीख",
+      notAvailable: "उपलब्ध नहीं",
+      downloadCertificate:
+        "टीकाकरण प्रमाणपत्र डाउनलोड करें",
+      certificateError:
+        "टीकाकरण प्रमाणपत्र डाउनलोड करने में समस्या हुई।",
+    },
+  };
+
+  const currentText = text[language];
 
   useEffect(() => {
     async function loadHistory() {
@@ -27,7 +72,10 @@ function VaccinationHistory() {
     try {
       await downloadMyCertificate();
     } catch (error) {
-      alert(error.message);
+      alert(
+        error.message ||
+          currentText.certificateError
+      );
     }
   }
 
@@ -49,11 +97,11 @@ function VaccinationHistory() {
       <div className="vaccination-history-header">
 
         <h1>
-          Vaccination History
+          {currentText.title}
         </h1>
 
         <p>
-          View your vaccination records and immunisation history.
+          {currentText.subtitle}
         </p>
 
       </div>
@@ -80,11 +128,11 @@ function VaccinationHistory() {
           <div className="vaccination-history-card-title">
 
             <h2>
-              Immunisation Records
+              {currentText.records}
             </h2>
 
             <p>
-              Your completed vaccination doses
+              {currentText.completedDoses}
             </p>
 
           </div>
@@ -111,11 +159,11 @@ function VaccinationHistory() {
             </div>
 
             <h3>
-              No vaccination records
+              {currentText.noRecords}
             </h3>
 
             <p>
-              No vaccination records have been found for your account.
+              {currentText.noRecordsDescription}
             </p>
 
           </div>
@@ -133,15 +181,15 @@ function VaccinationHistory() {
                   <tr>
 
                     <th>
-                      Vaccine
+                      {currentText.vaccine}
                     </th>
 
                     <th>
-                      Dose
+                      {currentText.dose}
                     </th>
 
                     <th>
-                      Date Administered
+                      {currentText.dateAdministered}
                     </th>
 
                   </tr>
@@ -174,7 +222,8 @@ function VaccinationHistory() {
                           </span>
 
                           <span>
-                            {record.vaccine_name || "N/A"}
+                            {record.vaccine_name ||
+                              currentText.notAvailable}
                           </span>
 
                         </div>
@@ -185,7 +234,8 @@ function VaccinationHistory() {
 
                         <span className="vaccination-history-dose">
 
-                          Dose {record.dose_number}
+                          {currentText.dose}{" "}
+                          {record.dose_number}
 
                         </span>
 
@@ -212,7 +262,7 @@ function VaccinationHistory() {
                 onClick={handleDownloadCertificate}
                 className="download-certificate-button"
               >
-                Download Vaccination Certificate
+                {currentText.downloadCertificate}
               </button>
 
             </div>

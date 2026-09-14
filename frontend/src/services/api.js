@@ -224,8 +224,7 @@ export async function createHealthcareCentre(
 }
 
 export async function getUsers() {
-  const token =
-    localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
 
   const response = await fetch(
     `${API_BASE_URL}/api/users`,
@@ -254,8 +253,7 @@ export async function createUser(
   password,
   role
 ) {
-  const token =
-    localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
 
   const response = await fetch(
     `${API_BASE_URL}/api/users`,
@@ -464,8 +462,7 @@ export async function createVaccinationSchedule(
       body: JSON.stringify({
         vaccine_id: Number(vaccineId),
         dose_number: Number(doseNumber),
-        recommended_age:
-          recommendedAge || null,
+        recommended_age: recommendedAge || null,
         minimum_interval_days:
           minimumIntervalDays
             ? Number(minimumIntervalDays)
@@ -489,15 +486,16 @@ export async function createVaccinationSchedule(
   return data;
 }
 
-export async function askVaccineAssistant(message) {
-  const token = localStorage.getItem(
-    "access_token"
-  );
+export async function askVaccineAssistant(
+  message,
+  language = "en"
+) {
+  const token = localStorage.getItem("access_token");
 
   const response = await fetch(
     `${API_BASE_URL}/api/ai/assistant?message=${encodeURIComponent(
       message
-    )}`,
+    )}&language=${encodeURIComponent(language)}`,
     {
       method: "POST",
       headers: {
@@ -548,8 +546,7 @@ export async function askAIAssistant(message) {
 }
 
 export async function downloadMyCertificate() {
-  const token =
-    localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token");
 
   const response = await fetch(
     `${API_BASE_URL}/api/certificates/me/pdf`,
@@ -577,17 +574,11 @@ export async function downloadMyCertificate() {
   }
 
   const blob = await response.blob();
-
-  const url =
-    window.URL.createObjectURL(blob);
-
-  const link =
-    document.createElement("a");
+  const url = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
 
   link.href = url;
-
-  link.download =
-    "vaccination-certificate.pdf";
+  link.download = "vaccination-certificate.pdf";
 
   document.body.appendChild(link);
 
@@ -596,4 +587,106 @@ export async function downloadMyCertificate() {
   link.remove();
 
   window.URL.revokeObjectURL(url);
+}
+
+export async function createNotification(notificationData) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/notifications`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(notificationData),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail || "Failed to send notification."
+    );
+  }
+
+  return data;
+}
+
+export async function getMyNotifications() {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/notifications/me`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail || "Failed to load notifications."
+    );
+  }
+
+  return data;
+}
+
+export async function markNotificationAsRead(
+  notificationId
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/notifications/${notificationId}/read`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to mark notification as read."
+    );
+  }
+
+  return data;
+}
+
+export async function getAllMissedDoses() {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/patients/missed-doses`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to load missed-dose alerts."
+    );
+  }
+
+  return data;
 }

@@ -1,10 +1,42 @@
 import { useEffect, useState } from "react";
 import { getMyProfile } from "../services/api";
+import { useLanguage } from "../context/LanguageContext";
 import "../styles/patient-profile.css";
 
 function PatientDashboard() {
+  const { language } = useLanguage();
+
   const [profile, setProfile] = useState(null);
   const [message, setMessage] = useState("");
+
+  const text = {
+    en: {
+      title: "My Profile",
+      subtitle: "View your information.",
+      patientInformation: "Patient information",
+      fullName: "Full Name",
+      dateOfBirth: "Date of Birth",
+      phoneNumber: "Phone Number",
+      notProvided: "Not provided",
+      security:
+        "Your personal information is securely stored in your Digital Immunisation record.",
+      loading: "Loading profile...",
+    },
+    hi: {
+      title: "मेरी प्रोफ़ाइल",
+      subtitle: "अपनी जानकारी देखें।",
+      patientInformation: "मरीज की जानकारी",
+      fullName: "पूरा नाम",
+      dateOfBirth: "जन्म तिथि",
+      phoneNumber: "फ़ोन नंबर",
+      notProvided: "उपलब्ध नहीं",
+      security:
+        "आपकी व्यक्तिगत जानकारी आपके डिजिटल टीकाकरण रिकॉर्ड में सुरक्षित रूप से संग्रहीत है।",
+      loading: "प्रोफ़ाइल लोड हो रही है...",
+    },
+  };
+
+  const currentText = text[language];
 
   useEffect(() => {
     async function loadProfile() {
@@ -34,7 +66,7 @@ function PatientDashboard() {
       <div className="patient-profile">
         <div className="patient-profile-loading">
           <span className="patient-profile-spinner"></span>
-          Loading profile...
+          {currentText.loading}
         </div>
       </div>
     );
@@ -45,23 +77,14 @@ function PatientDashboard() {
 
   return (
     <div className="patient-profile">
-
-      {/* Page Header */}
       <div className="patient-profile-header">
-        <h1>My Profile</h1>
+        <h1>{currentText.title}</h1>
 
-        <p>
-          View your information.
-        </p>
+        <p>{currentText.subtitle}</p>
       </div>
 
-
-      {/* Profile Card */}
       <div className="patient-profile-card">
-
-        {/* Card Header */}
         <div className="patient-profile-card-header">
-
           <div className="patient-profile-avatar">
             <svg
               viewBox="0 0 24 24"
@@ -86,53 +109,43 @@ function PatientDashboard() {
           </div>
 
           <div className="patient-profile-card-title">
-              <b>Patient information</b>
+            <b>{currentText.patientInformation}</b>
           </div>
-
         </div>
 
-
-        {/* Profile Details */}
         <div className="patient-profile-details">
-
           <div className="patient-profile-field">
             <span className="patient-profile-field-label">
-              Full Name
+              {currentText.fullName}
             </span>
 
             <span className="patient-profile-field-value">
-              {fullName || "Not provided"}
+              {fullName || currentText.notProvided}
             </span>
           </div>
-
 
           <div className="patient-profile-field">
             <span className="patient-profile-field-label">
-              Date of Birth
+              {currentText.dateOfBirth}
             </span>
 
             <span className="patient-profile-field-value">
-              {profile.date_of_birth || "Not provided"}
+              {profile.date_of_birth || currentText.notProvided}
             </span>
           </div>
-
 
           <div className="patient-profile-field">
             <span className="patient-profile-field-label">
-              Phone Number
+              {currentText.phoneNumber}
             </span>
 
             <span className="patient-profile-field-value">
-              {profile.phone || "Not provided"}
+              {profile.phone || currentText.notProvided}
             </span>
           </div>
-
         </div>
 
-
-        {/* Security Information */}
         <div className="patient-profile-security">
-
           <div className="patient-profile-security-icon">
             <svg
               viewBox="0 0 24 24"
@@ -160,15 +173,9 @@ function PatientDashboard() {
             </svg>
           </div>
 
-          <div>
-            Your personal information is securely stored
-            in your Digital Immunisation record.
-          </div>
-
+          <div>{currentText.security}</div>
         </div>
-
       </div>
-
     </div>
   );
 }

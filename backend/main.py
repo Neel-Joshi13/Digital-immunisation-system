@@ -14,7 +14,7 @@ from routers.healthcare_care import router as centres_router
 from routers.ai import router as ai_router
 from routers.vaccination_schedules import router as vaccination_schedule_router
 from routers.certificates import router as certificates_router
-
+from routers import notifications
 
 app = FastAPI(
     title="Digital Immunisation API",
@@ -89,6 +89,8 @@ app.include_router(ai_router)
 app.include_router(vaccination_schedule_router)
 
 app.include_router(certificates_router)
+
+app.include_router(notifications.router)
 
 
 
