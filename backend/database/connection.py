@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 
 DATABASE_URL = (
-    "mssql+pyodbc://NAANU\\SQLEXPRESS/DigitalImmunisation"
+    "YOUR SQL SERVER ADDRESS"
     "?driver=ODBC+Driver+17+for+SQL+Server"
     "&trusted_connection=yes"
 )
