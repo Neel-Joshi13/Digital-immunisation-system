@@ -574,3 +574,846 @@
     padding: 15px;
   }
 }
+.patient-profile-password-card {
+  position: relative;
+
+  width: 100%;
+
+  margin-top: 24px;
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffffff 0%,
+      #fcfdff 100%
+    );
+
+  border: 1px solid #e3e9f2;
+  border-radius: 20px;
+
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.02),
+    0 8px 28px rgba(15, 23, 42, 0.045),
+    0 22px 55px rgba(37, 99, 235, 0.035);
+
+  overflow: hidden;
+}
+
+.patient-profile-password-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 32px;
+  right: 32px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(37, 99, 235, 0.28),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+.patient-profile-password-header {
+  display: flex;
+  align-items: center;
+
+  gap: 18px;
+
+  padding-bottom: 26px;
+
+  border-bottom: 1px solid #edf1f6;
+}
+
+.patient-profile-password-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 58px;
+  height: 58px;
+
+  flex-shrink: 0;
+
+  color: #2563eb;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f4f8ff 0%,
+      #e7f0ff 100%
+    );
+
+  border: 1px solid #cfe0ff;
+  border-radius: 16px;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.patient-profile-password-icon svg {
+  width: 25px;
+  height: 25px;
+}
+
+.patient-profile-password-header h2 {
+  margin: 0;
+
+  color: #111c35;
+
+  font-size: 20px;
+  font-weight: 750;
+
+  line-height: 1.3;
+
+  letter-spacing: -0.025em;
+}
+
+.patient-profile-password-header p {
+  max-width: 620px;
+
+  margin: 5px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  line-height: 1.45;
+}
+
+.patient-profile-password-form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 20px;
+
+  margin-top: 26px;
+}
+
+.patient-profile-password-field {
+  width: 100%;
+}
+
+.patient-profile-password-field label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #475569;
+
+  font-size: 12.5px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+.patient-profile-password-input {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+}
+
+.patient-profile-password-input input {
+  width: 100%;
+
+  min-height: 48px;
+
+  padding: 0 78px 0 15px;
+
+  box-sizing: border-box;
+
+  color: #172033;
+
+  background: #ffffff;
+
+  border: 1px solid #dce3ed;
+  border-radius: 11px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.patient-profile-password-input input:hover {
+  border-color: #cbd8e8;
+}
+
+.patient-profile-password-input input:focus {
+  background: #ffffff;
+
+  border-color: #8fb4ef;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.patient-profile-password-input button {
+  position: absolute;
+
+  top: 50%;
+  right: 11px;
+
+  transform: translateY(-50%);
+
+  padding: 5px 7px;
+
+  color: #2563eb;
+
+  background: transparent;
+
+  border: 0;
+
+  border-radius: 6px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.patient-profile-password-input button:hover {
+  color: #1d4ed8;
+
+  background: #f1f6ff;
+}
+
+.patient-profile-password-input button:focus-visible {
+  outline: 2px solid rgba(37, 99, 235, 0.3);
+  outline-offset: 2px;
+}
+
+.patient-profile-password-strength {
+  margin-top: 10px;
+}
+
+.patient-profile-password-strength-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-bottom: 7px;
+
+  color: #94a3b8;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.patient-profile-password-strength-label.level-1 {
+  color: #dc2626;
+}
+
+.patient-profile-password-strength-label.level-2 {
+  color: #d97706;
+}
+
+.patient-profile-password-strength-label.level-3 {
+  color: #16a34a;
+}
+
+.patient-profile-password-strength-bars {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 5px;
+
+  width: 100%;
+}
+
+.patient-profile-password-strength-bars span {
+  height: 5px;
+
+  background: #e8edf4;
+
+  border-radius: 999px;
+
+  transition:
+    background 0.2s ease;
+}
+
+.patient-profile-password-strength-bars span.active.level-1 {
+  background: #ef4444;
+}
+
+.patient-profile-password-strength-bars span.active.level-2 {
+  background: #f59e0b;
+}
+
+.patient-profile-password-strength-bars span.active.level-3 {
+  background: #22c55e;
+}
+
+.patient-profile-password-strength p {
+  margin: 8px 0 0;
+
+  color: #94a3b8;
+
+  font-size: 11.5px;
+  font-weight: 500;
+
+  line-height: 1.5;
+}
+
+.patient-profile-password-error {
+  padding: 13px 15px;
+
+  color: #b91c1c;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f7,
+      #fff1f2
+    );
+
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 550;
+
+  line-height: 1.5;
+}
+
+.patient-profile-password-success {
+  padding: 13px 15px;
+
+  color: #15803d;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0fdf4,
+      #f7fee7
+    );
+
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 550;
+
+  line-height: 1.5;
+}
+
+.patient-profile-password-button {
+  align-self: flex-start;
+
+  min-height: 45px;
+
+  padding: 0 22px;
+
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  border: 1px solid #2563eb;
+  border-radius: 10px;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.16);
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.patient-profile-password-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #1e40af
+    );
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+.patient-profile-password-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.patient-profile-password-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 3px;
+}
+
+.patient-profile-password-button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+@media (max-width: 700px) {
+  .patient-profile-password-card {
+    margin-top: 18px;
+    padding: 23px;
+    border-radius: 16px;
+  }
+
+  .patient-profile-password-card::before {
+    left: 23px;
+    right: 23px;
+  }
+
+  .patient-profile-password-header {
+    gap: 14px;
+    padding-bottom: 22px;
+  }
+
+  .patient-profile-password-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+  }
+
+  .patient-profile-password-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .patient-profile-password-header h2 {
+    font-size: 18px;
+  }
+
+  .patient-profile-password-header p {
+    font-size: 12px;
+  }
+
+  .patient-profile-password-form {
+    gap: 17px;
+    margin-top: 22px;
+  }
+
+  .patient-profile-password-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .patient-profile-password-card {
+    margin-top: 16px;
+    padding: 19px;
+    border-radius: 15px;
+  }
+
+  .patient-profile-password-card::before {
+    left: 19px;
+    right: 19px;
+  }
+
+  .patient-profile-password-header {
+    align-items: flex-start;
+    gap: 12px;
+    padding-bottom: 19px;
+  }
+
+  .patient-profile-password-icon {
+    width: 47px;
+    height: 47px;
+    border-radius: 13px;
+  }
+
+  .patient-profile-password-icon svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .patient-profile-password-header h2 {
+    font-size: 17px;
+  }
+
+  .patient-profile-password-header p {
+    margin-top: 3px;
+    font-size: 11.5px;
+  }
+
+  .patient-profile-password-form {
+    gap: 15px;
+    margin-top: 18px;
+  }
+
+  .patient-profile-password-input input {
+    min-height: 46px;
+    padding-left: 13px;
+    padding-right: 72px;
+    font-size: 13.5px;
+  }
+
+  .patient-profile-password-input button {
+    right: 9px;
+  }
+
+  .patient-profile-password-strength p {
+    font-size: 11px;
+  }
+
+  .patient-profile-password-button {
+    min-height: 44px;
+    font-size: 12.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .patient-profile-password-card,
+  .patient-profile-password-input input,
+  .patient-profile-password-strength-bars span,
+  .patient-profile-password-button {
+    transition: none;
+  }
+
+  .patient-profile-password-button:hover:not(:disabled),
+  .patient-profile-password-button:active:not(:disabled) {
+    transform: none;
+  }
+}
+.patient-profile-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+}
+
+.patient-profile-card-title > span {
+  display: block;
+  margin-top: 5px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.patient-profile-form {
+  margin-top: 26px;
+}
+
+.patient-profile-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.patient-profile-form-field {
+  min-width: 0;
+}
+
+.patient-profile-form-field-full {
+  grid-column: 1 / -1;
+}
+
+.patient-profile-form-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.patient-profile-form-field input,
+.patient-profile-form-field select,
+.patient-profile-form-field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  color: #172033;
+  background: #ffffff;
+  border: 1px solid #dce3ed;
+  border-radius: 11px;
+  outline: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.patient-profile-form-field input,
+.patient-profile-form-field select {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.patient-profile-form-field textarea {
+  min-height: 96px;
+  padding: 13px 14px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.patient-profile-form-field input:hover,
+.patient-profile-form-field select:hover,
+.patient-profile-form-field textarea:hover {
+  border-color: #cbd8e8;
+}
+
+.patient-profile-form-field input:focus,
+.patient-profile-form-field select:focus,
+.patient-profile-form-field textarea:focus {
+  background: #ffffff;
+  border-color: #8fb4ef;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.patient-profile-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.patient-profile-save-button,
+.patient-profile-cancel-button,
+.patient-profile-edit-button {
+  min-height: 43px;
+  padding: 0 18px;
+
+  border-radius: 10px;
+
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.patient-profile-save-button {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  border: 1px solid #2563eb;
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.16);
+}
+
+.patient-profile-save-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+
+  background:
+    linear-gradient(
+      135deg,
+      #1d4ed8,
+      #1e40af
+    );
+
+  box-shadow:
+    0 8px 18px rgba(37, 99, 235, 0.2);
+}
+
+.patient-profile-cancel-button {
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #dce3ed;
+}
+
+.patient-profile-cancel-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd8e8;
+}
+
+.patient-profile-edit-button {
+  flex-shrink: 0;
+
+  min-height: 38px;
+
+  color: #2563eb;
+  background: #f4f8ff;
+
+  border: 1px solid #cfe0ff;
+}
+
+.patient-profile-edit-button:hover {
+  transform: translateY(-1px);
+
+  background: #eaf2ff;
+  border-color: #b9d2fa;
+}
+
+.patient-profile-save-button:focus-visible,
+.patient-profile-cancel-button:focus-visible,
+.patient-profile-edit-button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.18);
+  outline-offset: 3px;
+}
+
+.patient-profile-save-button:disabled,
+.patient-profile-cancel-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.patient-profile-form-error,
+.patient-profile-form-success {
+  margin-top: 18px;
+  padding: 13px 15px;
+
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.5;
+}
+
+.patient-profile-form-error {
+  color: #b91c1c;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff7f7,
+      #fff1f2
+    );
+
+  border: 1px solid #fecaca;
+}
+
+.patient-profile-form-success {
+  color: #15803d;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0fdf4,
+      #f7fee7
+    );
+
+  border: 1px solid #bbf7d0;
+}
+
+@media (max-width: 700px) {
+  .patient-profile-form-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .patient-profile-form-field-full {
+    grid-column: auto;
+  }
+
+  .patient-profile-card-title {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .patient-profile-form-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .patient-profile-save-button,
+  .patient-profile-cancel-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  .patient-profile-form {
+    margin-top: 19px;
+  }
+
+  .patient-profile-form-field input,
+  .patient-profile-form-field select {
+    min-height: 46px;
+    padding-left: 13px;
+    padding-right: 13px;
+    font-size: 13.5px;
+  }
+
+  .patient-profile-form-field textarea {
+    padding: 12px 13px;
+    font-size: 13.5px;
+  }
+
+  .patient-profile-form-field label {
+    font-size: 12px;
+  }
+
+  .patient-profile-edit-button {
+    min-height: 36px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .patient-profile-form-field input,
+  .patient-profile-form-field select,
+  .patient-profile-form-field textarea,
+  .patient-profile-save-button,
+  .patient-profile-cancel-button,
+  .patient-profile-edit-button {
+    transition: none;
+  }
+
+  .patient-profile-save-button:hover:not(:disabled),
+  .patient-profile-edit-button:hover {
+    transform: none;
+  }
+}

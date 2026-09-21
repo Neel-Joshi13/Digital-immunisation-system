@@ -4,6 +4,8 @@ import {
   getMyAppointments,
   getCentres,
   createAppointment,
+  cancelAppointment,
+  rescheduleAppointment,
 } from "../services/api";
 
 import { useLanguage } from "../context/LanguageContext";
@@ -20,6 +22,10 @@ function Appointments() {
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [reason, setReason] = useState("");
+
+  const [rescheduleId, setRescheduleId] = useState(null);
+  const [rescheduleDate, setRescheduleDate] = useState("");
+  const [rescheduleTime, setRescheduleTime] = useState("");
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -41,8 +47,10 @@ function Appointments() {
       centre: "Centre",
       reason: "Reason",
       status: "Status",
+      action: "Action",
       scheduled: "SCHEDULED",
       completed: "COMPLETED",
+      cancelled: "CANCELLED",
       missed: "MISSED",
       bookTitle: "Book an Appointment",
       bookDescription:
@@ -53,6 +61,16 @@ function Appointments() {
       reasonPlaceholder: "Reason for appointment",
       bookAppointment: "Book Appointment",
       notAvailable: "N/A",
+      cancel: "Cancel",
+      reschedule: "Reschedule",
+      saveReschedule: "Save Changes",
+      cancelReschedule: "Cancel",
+      cancelConfirmation:
+        "Are you sure you want to cancel this appointment?",
+      cancelledSuccess:
+        "Appointment cancelled successfully.",
+      rescheduledSuccess:
+        "Appointment rescheduled successfully.",
     },
 
     hi: {
@@ -71,8 +89,10 @@ function Appointments() {
       centre: "केंद्र",
       reason: "कारण",
       status: "स्थिति",
+      action: "कार्रवाई",
       scheduled: "निर्धारित",
       completed: "पूरा हुआ",
+      cancelled: "रद्द",
       missed: "छूट गया",
       bookTitle: "अपॉइंटमेंट बुक करें",
       bookDescription:
@@ -83,6 +103,16 @@ function Appointments() {
       reasonPlaceholder: "अपॉइंटमेंट का कारण",
       bookAppointment: "अपॉइंटमेंट बुक करें",
       notAvailable: "उपलब्ध नहीं",
+      cancel: "रद्द करें",
+      reschedule: "पुनर्निर्धारित करें",
+      saveReschedule: "बदलाव सहेजें",
+      cancelReschedule: "रद्द करें",
+      cancelConfirmation:
+        "क्या आप वाकई इस अपॉइंटमेंट को रद्द करना चाहते हैं?",
+      cancelledSuccess:
+        "अपॉइंटमेंट सफलतापूर्वक रद्द किया गया।",
+      rescheduledSuccess:
+        "अपॉइंटमेंट सफलतापूर्वक पुनर्निर्धारित किया गया।",
     },
   };
 
@@ -138,6 +168,77 @@ function Appointments() {
     }
   }
 
+  async function handleCancelAppointment(appointmentId) {
+    const confirmed = window.confirm(
+      currentText.cancelConfirmation
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setMessage("");
+    setError("");
+
+    try {
+      await cancelAppointment(appointmentId);
+
+      setMessage(
+        currentText.cancelledSuccess
+      );
+
+      await loadAppointments();
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
+  function handleStartReschedule(appointment) {
+    setMessage("");
+    setError("");
+
+    setRescheduleId(appointment.id);
+    setRescheduleDate(
+      appointment.appointment_date
+    );
+    setRescheduleTime(
+      appointment.appointment_time
+        ? appointment.appointment_time.slice(0, 5)
+        : ""
+    );
+  }
+
+  function handleCancelReschedule() {
+    setRescheduleId(null);
+    setRescheduleDate("");
+    setRescheduleTime("");
+  }
+
+  async function handleRescheduleSubmit(event) {
+    event.preventDefault();
+
+    setMessage("");
+    setError("");
+
+    try {
+      await rescheduleAppointment(
+        rescheduleId,
+        rescheduleDate,
+        rescheduleTime
+      );
+
+      setMessage(
+        currentText.rescheduledSuccess
+      );
+
+      handleCancelReschedule();
+
+      await loadAppointments();
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   function getAppointmentStatus(appointment) {
     const storedStatus =
       appointment.status || "N/A";
@@ -157,7 +258,9 @@ function Appointments() {
         const now = new Date();
 
         if (
-          !Number.isNaN(appointmentDateTime.getTime()) &&
+          !Number.isNaN(
+            appointmentDateTime.getTime()
+          ) &&
           appointmentDateTime < now
         ) {
           return "MISSED";
@@ -178,6 +281,10 @@ function Appointments() {
 
     if (normalizedStatus === "completed") {
       return currentText.completed;
+    }
+
+    if (normalizedStatus === "cancelled") {
+      return currentText.cancelled;
     }
 
     if (normalizedStatus === "missed") {
@@ -305,6 +412,7 @@ function Appointments() {
                   <th>{currentText.centre}</th>
                   <th>{currentText.reason}</th>
                   <th>{currentText.status}</th>
+                  <th>{currentText.action}</th>
                 </tr>
               </thead>
 
@@ -320,6 +428,8 @@ function Appointments() {
                       ? "completed"
                       : status.toLowerCase() === "scheduled"
                       ? "scheduled"
+                      : status.toLowerCase() === "cancelled"
+                      ? "cancelled"
                       : status.toLowerCase() === "missed"
                       ? "missed"
                       : "default";
@@ -356,6 +466,41 @@ function Appointments() {
                         </span>
                       </td>
 
+                      <td>
+
+                        {status.toLowerCase() ===
+                          "scheduled" && (
+                          <div className="appointment-actions">
+
+                            <button
+                              type="button"
+                              className="appointment-reschedule-button"
+                              onClick={() =>
+                                handleStartReschedule(
+                                  appointment
+                                )
+                              }
+                            >
+                              {currentText.reschedule}
+                            </button>
+
+                            <button
+                              type="button"
+                              className="appointment-cancel-button"
+                              onClick={() =>
+                                handleCancelAppointment(
+                                  appointment.id
+                                )
+                              }
+                            >
+                              {currentText.cancel}
+                            </button>
+
+                          </div>
+                        )}
+
+                      </td>
+
                     </tr>
                   );
                 })}
@@ -368,6 +513,86 @@ function Appointments() {
         )}
 
       </div>
+
+      {rescheduleId !== null && (
+        <div className="appointment-reschedule-card">
+
+          <div className="appointment-reschedule-header">
+            <h2>{currentText.reschedule}</h2>
+          </div>
+
+          <form
+            className="appointment-reschedule-form"
+            onSubmit={handleRescheduleSubmit}
+          >
+
+            <div className="appointment-reschedule-fields">
+
+              <div className="appointment-field">
+
+                <label htmlFor="reschedule-date">
+                  {currentText.date}
+                </label>
+
+                <input
+                  id="reschedule-date"
+                  type="date"
+                  value={rescheduleDate}
+                  onChange={(event) =>
+                    setRescheduleDate(
+                      event.target.value
+                    )
+                  }
+                  required
+                />
+
+              </div>
+
+              <div className="appointment-field">
+
+                <label htmlFor="reschedule-time">
+                  {currentText.time}
+                </label>
+
+                <input
+                  id="reschedule-time"
+                  type="time"
+                  value={rescheduleTime}
+                  onChange={(event) =>
+                    setRescheduleTime(
+                      event.target.value
+                    )
+                  }
+                  required
+                />
+
+              </div>
+
+            </div>
+
+            <div className="appointment-reschedule-actions">
+
+              <button
+                type="button"
+                className="appointment-reschedule-cancel-button"
+                onClick={handleCancelReschedule}
+              >
+                {currentText.cancelReschedule}
+              </button>
+
+              <button
+                type="submit"
+                className="appointment-reschedule-save-button"
+              >
+                {currentText.saveReschedule}
+              </button>
+
+            </div>
+
+          </form>
+
+        </div>
+      )}
 
       <div className="book-appointment-card">
 
@@ -458,7 +683,9 @@ function Appointments() {
                 type="date"
                 value={appointmentDate}
                 onChange={(event) =>
-                  setAppointmentDate(event.target.value)
+                  setAppointmentDate(
+                    event.target.value
+                  )
                 }
                 required
               />
@@ -476,7 +703,9 @@ function Appointments() {
                 type="time"
                 value={appointmentTime}
                 onChange={(event) =>
-                  setAppointmentTime(event.target.value)
+                  setAppointmentTime(
+                    event.target.value
+                  )
                 }
                 required
               />
@@ -495,7 +724,9 @@ function Appointments() {
                 onChange={(event) =>
                   setReason(event.target.value)
                 }
-                placeholder={currentText.reasonPlaceholder}
+                placeholder={
+                  currentText.reasonPlaceholder
+                }
                 required
               />
 

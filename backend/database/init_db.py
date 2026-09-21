@@ -3,13 +3,16 @@ from sqlalchemy import inspect, text
 from database.base import Base
 from database.connection import engine
 from database.models.appointment import Appointment
+from database.models.audit_log import AuditLog
 from database.models.healthcare_centre import HealthcareCentre
 from database.models.immunisation import ImmunisationRecord
 from database.models.notification import Notification
+from database.models.password_reset import PasswordResetToken
 from database.models.patient import Patient
 from database.models.user import User
 from database.models.vaccination_schedule import VaccinationSchedule
 from database.models.vaccine import Vaccine
+from database.models.login_history import LoginHistory
 
 
 def create_tables():

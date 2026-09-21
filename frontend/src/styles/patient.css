@@ -1407,3 +1407,43 @@
   box-shadow:
     0 0 0 2px #ffffff;
 }
+.patient-language-control {
+  display: flex;
+  align-items: center;
+}
+
+.patient-language-control select {
+  min-width: 92px;
+  height: 40px;
+  padding: 0 32px 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.patient-language-control select:hover {
+  border-color: #2563eb;
+  background: #f8fafc;
+}
+
+.patient-language-control select:focus {
+  border-color: #2563eb;
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.patient-language-control select option {
+  background: #ffffff;
+  color: #172033;
+  font-size: 14px;
+}

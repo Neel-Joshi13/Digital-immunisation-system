@@ -13,6 +13,24 @@ class PatientCreate(BaseModel):
     address: str
 
 
+class PatientProfileCreate(BaseModel):
+    first_name: str
+    last_name: str
+    date_of_birth: date
+    gender: str
+    phone: str
+    address: str
+
+
+class PatientProfileUpdate(BaseModel):
+    first_name: str | None = None
+    last_name: str | None = None
+    date_of_birth: date | None = None
+    gender: str | None = None
+    phone: str | None = None
+    address: str | None = None
+
+
 class PatientResponse(BaseModel):
     id: int
     user_id: int

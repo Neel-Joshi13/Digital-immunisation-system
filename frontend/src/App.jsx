@@ -15,6 +15,8 @@ import AdminCentres from "./pages/AdminCentres";
 import AdminVaccines from "./pages/AdminVaccines";
 import AdminImmunisations from "./pages/AdminImmunisations";
 import AdminVaccinationSchedules from "./pages/AdminVaccinationSchedules";
+import AdminAuditLogs from "./pages/AdminAuditLogs";
+import AdminLoginHistory from "./pages/AdminLoginHistory";
 import VaccineChatbot from "./pages/VaccineChatbot";
 import AIAssistant from "./pages/AIAssistant";
 import CertificateVerification from "./pages/CertificateVerification";
@@ -30,20 +32,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Navigate
-              to="/login"
-              replace
-            />
-          }
-        />
+        <Route path="/" element={<Navigate to="/login" replace />} />
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
         <Route
           path="/verify/:token"
@@ -58,78 +49,38 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route
-            index
-            element={<PatientHome />}
-          />
-
-          <Route
-            path="profile"
-            element={<PatientDashboard />}
-          />
-
-          <Route
-            path="vaccinations"
-            element={<VaccinationHistory />}
-          />
-
-          <Route
-            path="appointments"
-            element={<Appointments />}
-          />
-
-          <Route
-            path="notifications"
-            element={<PatientNotifications />}
-          />
-
-          <Route
-            path="vaccine-assistant"
-            element={<VaccineChatbot />}
-          />
-
-          <Route
-            path="ai-assistant"
-            element={<AIAssistant />}
-          />
-
+          <Route index element={<PatientHome />} />
+          <Route path="profile" element={<PatientDashboard />} />
+          <Route path="vaccinations" element={<VaccinationHistory />} />
+          <Route path="appointments" element={<Appointments />} />
+          <Route path="notifications" element={<PatientNotifications />} />
+          <Route path="vaccine-assistant" element={<VaccineChatbot />} />
+          <Route path="ai-assistant" element={<AIAssistant />} />
           <Route
             path="schedule"
-            element={
-              <PatientVaccinationSchedule />
-            }
+            element={<PatientVaccinationSchedule />}
           />
-
           <Route
             path="vaccination-schedule"
-            element={
-              <PatientVaccinationSchedule />
-            }
+            element={<PatientVaccinationSchedule />}
           />
         </Route>
 
         <Route
           path="/worker"
           element={
-            <ProtectedRoute
-              allowedRoles={["HEALTHCARE_WORKER"]}
-            >
+            <ProtectedRoute allowedRoles={["HEALTHCARE_WORKER"]}>
               <WorkerLayout />
             </ProtectedRoute>
           }
         >
-          <Route
-            index
-            element={<WorkerHome />}
-          />
+          <Route index element={<WorkerHome />} />
         </Route>
 
         <Route
           path="/admin"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminHome />
             </ProtectedRoute>
           }
@@ -138,9 +89,7 @@ function App() {
         <Route
           path="/admin/users"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminUsers />
             </ProtectedRoute>
           }
@@ -149,9 +98,7 @@ function App() {
         <Route
           path="/admin/healthcare-centres"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminCentres />
             </ProtectedRoute>
           }
@@ -160,9 +107,7 @@ function App() {
         <Route
           path="/admin/vaccines"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminVaccines />
             </ProtectedRoute>
           }
@@ -171,9 +116,7 @@ function App() {
         <Route
           path="/admin/immunisations"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminImmunisations />
             </ProtectedRoute>
           }
@@ -182,10 +125,26 @@ function App() {
         <Route
           path="/admin/vaccination-schedules"
           element={
-            <ProtectedRoute
-              allowedRoles={["ADMIN"]}
-            >
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminVaccinationSchedules />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/audit-logs"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminAuditLogs />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/login-history"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminLoginHistory />
             </ProtectedRoute>
           }
         />

@@ -135,6 +135,30 @@ function AdminNav() {
         </Link>
 
 
+        <Link
+          to="/admin/audit-logs"
+          className={
+            location.pathname === "/admin/audit-logs"
+              ? "admin-nav-link active"
+              : "admin-nav-link"
+          }
+        >
+          Audit Logs
+        </Link>
+
+
+        <Link
+          to="/admin/login-history"
+          className={
+            location.pathname === "/admin/login-history"
+              ? "admin-nav-link active"
+              : "admin-nav-link"
+          }
+        >
+          Login History
+        </Link>
+
+
         {/* Logout */}
 
         <button

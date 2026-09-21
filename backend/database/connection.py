@@ -1,9 +1,9 @@
 from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
 
 
 DATABASE_URL = (
-    "DATABASE_URL"
-    "Database Name"
+    "mssql+pyodbc://NAANU\\SQLEXPRESS/DigitalImmunisation"
     "?driver=ODBC+Driver+17+for+SQL+Server"
     "&trusted_connection=yes"
 )
@@ -12,8 +12,6 @@ engine = create_engine(
     DATABASE_URL,
     echo=True
 )
-
-from sqlalchemy.orm import Session
 
 
 def get_db():

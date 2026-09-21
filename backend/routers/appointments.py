@@ -10,6 +10,7 @@ from database.models.patient import Patient
 from database.models.healthcare_centre import HealthcareCentre
 from schemas.appointment import (
     AppointmentCreate,
+    AppointmentReschedule,
     AppointmentStatusUpdate,
     AppointmentResponse,
 )
@@ -149,6 +150,163 @@ def get_my_appointments(
         }
         for appointment in appointments
     ]
+
+
+@router.patch(
+    "/{appointment_id}/cancel",
+    response_model=AppointmentResponse,
+)
+def cancel_my_appointment(
+    appointment_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(
+        require_role("PATIENT")
+    ),
+):
+    patient = db.scalar(
+        select(Patient).where(
+            Patient.user_id == current_user.id
+        )
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient profile not found.",
+        )
+
+    appointment = db.scalar(
+        select(Appointment)
+        .options(
+            joinedload(Appointment.healthcare_centre)
+        )
+        .where(
+            Appointment.id == appointment_id,
+            Appointment.patient_id == patient.id,
+        )
+    )
+
+    if appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found.",
+        )
+
+    if appointment.status != "SCHEDULED":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only scheduled appointments can be cancelled.",
+        )
+
+    appointment.status = "CANCELLED"
+
+    db.commit()
+    db.refresh(appointment)
+
+    return {
+        "id": appointment.id,
+        "patient_id": appointment.patient_id,
+        "centre_id": appointment.centre_id,
+        "centre_name": appointment.healthcare_centre.name,
+        "appointment_date": appointment.appointment_date,
+        "appointment_time": appointment.appointment_time,
+        "status": appointment.status,
+        "reason": appointment.reason,
+    }
+
+
+@router.patch(
+    "/{appointment_id}/reschedule",
+    response_model=AppointmentResponse,
+)
+def reschedule_my_appointment(
+    appointment_id: int,
+    appointment_data: AppointmentReschedule,
+    db: Session = Depends(get_db),
+    current_user=Depends(
+        require_role("PATIENT")
+    ),
+):
+    patient = db.scalar(
+        select(Patient).where(
+            Patient.user_id == current_user.id
+        )
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient profile not found.",
+        )
+
+    appointment = db.scalar(
+        select(Appointment)
+        .options(
+            joinedload(Appointment.healthcare_centre)
+        )
+        .where(
+            Appointment.id == appointment_id,
+            Appointment.patient_id == patient.id,
+        )
+    )
+
+    if appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found.",
+        )
+
+    if appointment.status != "SCHEDULED":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only scheduled appointments can be rescheduled.",
+        )
+
+    if appointment_data.appointment_date < date.today():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Appointment date cannot be in the past.",
+        )
+
+    existing_appointment = db.scalar(
+        select(Appointment).where(
+            Appointment.id != appointment.id,
+            Appointment.centre_id == appointment.centre_id,
+            Appointment.appointment_date
+            == appointment_data.appointment_date,
+            Appointment.appointment_time
+            == appointment_data.appointment_time,
+            Appointment.status == "SCHEDULED",
+        )
+    )
+
+    if existing_appointment:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="This time slot is already booked.",
+        )
+
+    appointment.appointment_date = (
+        appointment_data.appointment_date
+    )
+
+    appointment.appointment_time = (
+        appointment_data.appointment_time
+    )
+
+    db.commit()
+    db.refresh(appointment)
+
+    return {
+        "id": appointment.id,
+        "patient_id": appointment.patient_id,
+        "centre_id": appointment.centre_id,
+        "centre_name": appointment.healthcare_centre.name,
+        "appointment_date": appointment.appointment_date,
+        "appointment_time": appointment.appointment_time,
+        "status": appointment.status,
+        "reason": appointment.reason,
+    }
 
 
 @router.get(

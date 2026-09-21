@@ -24,7 +24,7 @@ function VaccineChatbot() {
   const text = {
     en: {
       title: "Vaccine Assistant",
-      subtitle: "Get quick answers about vaccines",
+      subtitle: "Get answers about vaccines",
       important: "Important:",
       disclaimer:
         "This AI assistant provides general vaccine information and does not replace advice from a qualified healthcare professional.",
@@ -49,7 +49,7 @@ function VaccineChatbot() {
     },
     hi: {
       title: "टीका सहायक",
-      subtitle: "टीकों के बारे में तुरंत जानकारी प्राप्त करें",
+      subtitle: "टीकों के बारे में जानकारी प्राप्त करें",
       important: "महत्वपूर्ण:",
       disclaimer:
         "यह AI सहायक टीकों के बारे में सामान्य जानकारी प्रदान करता है और योग्य स्वास्थ्य पेशेवर की सलाह का विकल्प नहीं है।",

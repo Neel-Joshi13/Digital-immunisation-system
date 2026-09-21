@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-
 import {
   getUsers,
   createUser,
+  deleteUser,
 } from "../services/api";
 
 import AdminNav from "../components/AdminNav";
@@ -59,6 +59,31 @@ function AdminUsers() {
     }
   }
 
+  async function handleDeletePatient(user) {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the patient account for ${user.email}? This action cannot be undone.`
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    setMessage("");
+    setError("");
+
+    try {
+      await deleteUser(user.id);
+
+      setMessage(
+        "Patient account deleted successfully."
+      );
+
+      await loadUsers();
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   return (
     <div className="admin-layout">
       <AdminNav />
@@ -91,6 +116,7 @@ function AdminUsers() {
                 <th>Role</th>
                 <th>Active</th>
                 <th>Created</th>
+                <th>Action</th>
               </tr>
             </thead>
 
@@ -110,6 +136,19 @@ function AdminUsers() {
                   </td>
 
                   <td>{user.created_at}</td>
+
+                  <td>
+                    {user.role === "PATIENT" && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleDeletePatient(user)
+                        }
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,22 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
+  forgotPassword,
   loginUser,
   getMyUser,
+  resetPassword,
 } from "../services/api";
 
 function Login() {
+  const [mode, setMode] = useState("login");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("PATIENT");
+
+  const [resetToken, setResetToken] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] =
+    useState("");
+
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+  const [showNewPassword, setShowNewPassword] =
+    useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
+
+  const [emailFocused, setEmailFocused] =
+    useState(false);
+  const [passwordFocused, setPasswordFocused] =
+    useState(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(
+      window.location.search
+    );
+
+    const token = params.get("reset_token");
+
+    if (token) {
+      setResetToken(token);
+      setMode("reset");
+      setMessage(
+        "Create a new password for your account."
+      );
+    }
+  }, []);
 
   async function handleLogin(event) {
     event.preventDefault();
@@ -76,10 +111,632 @@ function Login() {
     }
   }
 
+  async function handleForgotPassword(event) {
+    event.preventDefault();
+
+    setMessage("");
+    setIsLoading(true);
+
+    try {
+      await forgotPassword(email);
+
+      setMessage(
+        "If the email exists, a password reset link has been sent. Please check your email."
+      );
+    } catch (error) {
+      setMessage(
+        error?.message ||
+          "Unable to create the password reset request."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleResetPassword(event) {
+    event.preventDefault();
+
+    setMessage("");
+
+    if (!resetToken) {
+      setMessage(
+        "This password reset link is invalid or missing."
+      );
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setMessage(
+        "New password and confirmation password do not match."
+      );
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      await resetPassword(
+        resetToken,
+        newPassword,
+        confirmPassword
+      );
+
+      setEmail("");
+      setPassword("");
+      setResetToken("");
+      setNewPassword("");
+      setConfirmPassword("");
+
+      window.history.replaceState(
+        {},
+        document.title,
+        window.location.pathname
+      );
+
+      setMode("login");
+      setMessage(
+        "Password reset successfully. You can now sign in with your new password."
+      );
+    } catch (error) {
+      setMessage(
+        error?.message ||
+          "Unable to reset your password."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  function switchToLogin() {
+    setMode("login");
+    setMessage("");
+    setResetToken("");
+    setNewPassword("");
+    setConfirmPassword("");
+
+    window.history.replaceState(
+      {},
+      document.title,
+      window.location.pathname
+    );
+  }
+
+  function getPasswordStrength(value) {
+    let score = 0;
+
+    if (value.length >= 8) {
+      score += 1;
+    }
+
+    if (/[A-Z]/.test(value)) {
+      score += 1;
+    }
+
+    if (/[a-z]/.test(value)) {
+      score += 1;
+    }
+
+    if (/[0-9]/.test(value)) {
+      score += 1;
+    }
+
+    if (/[^A-Za-z0-9]/.test(value)) {
+      score += 1;
+    }
+
+    if (score >= 5) {
+      return "Strong";
+    }
+
+    if (score >= 3) {
+      return "Medium";
+    }
+
+    return "Weak";
+  }
+
   const isFormReady =
     email.trim() !== "" &&
     password.trim() !== "" &&
     !isLoading;
+
+  if (mode === "forgot") {
+    return (
+      <main className="login-page">
+        <div
+          className="login-orb login-orb-one"
+          aria-hidden="true"
+        />
+
+        <div
+          className="login-orb login-orb-two"
+          aria-hidden="true"
+        />
+
+        <div
+          className="login-grid"
+          aria-hidden="true"
+        />
+
+        <section className="login-container">
+          <div className="login-card">
+            <div
+              className="login-card-accent"
+              aria-hidden="true"
+            />
+
+            <div className="login-brand">
+              <div className="login-brand-mark">
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M24 42S9 30.9 9 18.4C9 10.8 14.1 6 20.1 6c3.4 0 6.1 1.7 7.9 4.4C29.8 7.7 32.5 6 35.9 6 41.9 6 47 10.8 47 18.4 47 30.9 32 42 24 42Z"
+                    fill="currentColor"
+                    transform="translate(-4 0)"
+                  />
+
+                  <path
+                    d="M24 13V29"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+
+                  <path
+                    d="M16 21H32"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              <div className="login-brand-text">
+                <span className="login-brand-name">
+                  Digital Immunisation
+                </span>
+
+                <span className="login-brand-subtitle">
+                  Digital healthcare management
+                </span>
+              </div>
+            </div>
+
+            <div className="login-heading">
+              <span className="login-eyebrow">
+                Account recovery
+              </span>
+
+              <h1>Forgot your password?</h1>
+
+              <p>
+                Enter your email address and we will
+                send you a password reset link.
+              </p>
+            </div>
+
+            <form
+              className="login-form"
+              onSubmit={handleForgotPassword}
+            >
+              <div className="login-field">
+                <div className="login-label-row">
+                  <label htmlFor="forgot-email">
+                    Email address
+                  </label>
+                </div>
+
+                <div
+                  className={`login-control ${
+                    emailFocused
+                      ? "login-control-focused"
+                      : ""
+                  }`}
+                >
+                  <span
+                    className="login-control-icon"
+                    aria-hidden="true"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <rect
+                        x="3.5"
+                        y="5"
+                        width="17"
+                        height="14"
+                        rx="2.5"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+
+                      <path
+                        d="m4.5 7 7.5 6 7.5-6"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+
+                  <input
+                    id="forgot-email"
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(event) => {
+                      setEmail(event.target.value);
+                      setMessage("");
+                    }}
+                    onFocus={() =>
+                      setEmailFocused(true)
+                    }
+                    onBlur={() =>
+                      setEmailFocused(false)
+                    }
+                    className="login-input login-input-icon"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              {message && (
+                <div
+                  className="login-error"
+                  role="alert"
+                >
+                  <span className="login-error-icon">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                      />
+
+                      <path
+                        d="M12 8v5"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                      />
+
+                      <circle
+                        cx="12"
+                        cy="16.5"
+                        r="1"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+
+                  <div className="login-error-content">
+                    <span>{message}</span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="login-submit login-submit-ready"
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? "Sending reset link..."
+                  : "Send Reset Link"}
+              </button>
+
+              <button
+                type="button"
+                className="login-back-button"
+                onClick={switchToLogin}
+              >
+                Back to sign in
+              </button>
+            </form>
+
+            <div className="login-security">
+              <span
+                className="login-security-icon"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M12 3 5 6v5c0 4.7 2.8 8.5 7 10 4.2-1.5 7-5.3 7-10V6l-7-3Z"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinejoin="round"
+                  />
+
+                  <path
+                    d="m9 12 2 2 4-4"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+
+              <span>
+                Your healthcare information is
+                protected and securely stored.
+              </span>
+            </div>
+          </div>
+
+          <p className="login-footer">
+            Digital Immunisation
+            <span>•</span>
+            Healthcare access
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+  if (mode === "reset") {
+    const passwordStrength =
+      getPasswordStrength(newPassword);
+
+    return (
+      <main className="login-page">
+        <div
+          className="login-orb login-orb-one"
+          aria-hidden="true"
+        />
+
+        <div
+          className="login-orb login-orb-two"
+          aria-hidden="true"
+        />
+
+        <div
+          className="login-grid"
+          aria-hidden="true"
+        />
+
+        <section className="login-container">
+          <div className="login-card">
+            <div
+              className="login-card-accent"
+              aria-hidden="true"
+            />
+
+            <div className="login-brand">
+              <div className="login-brand-mark">
+                <svg
+                  viewBox="0 0 48 48"
+                  fill="none"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M24 42S9 30.9 9 18.4C9 10.8 14.1 6 20.1 6c3.4 0 6.1 1.7 7.9 4.4C29.8 7.7 32.5 6 35.9 6 41.9 6 47 10.8 47 18.4 47 30.9 32 42 24 42Z"
+                    fill="currentColor"
+                    transform="translate(-4 0)"
+                  />
+
+                  <path
+                    d="M24 13V29"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+
+                  <path
+                    d="M16 21H32"
+                    stroke="white"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </div>
+
+              <div className="login-brand-text">
+                <span className="login-brand-name">
+                  Digital Immunisation
+                </span>
+
+                <span className="login-brand-subtitle">
+                  Digital healthcare management
+                </span>
+              </div>
+            </div>
+
+            <div className="login-heading">
+              <span className="login-eyebrow">
+                Create new password
+              </span>
+
+              <h1>Reset your password</h1>
+
+              <p>
+                Choose a strong password for your
+                account.
+              </p>
+            </div>
+
+            <form
+              className="login-form"
+              onSubmit={handleResetPassword}
+            >
+              <div className="login-field">
+                <div className="login-label-row">
+                  <label htmlFor="reset-new-password">
+                    New password
+                  </label>
+
+                  {newPassword && (
+                    <span className="login-password-strength">
+                      {passwordStrength}
+                    </span>
+                  )}
+                </div>
+
+                <div className="login-control">
+                  <input
+                    id="reset-new-password"
+                    type={
+                      showNewPassword
+                        ? "text"
+                        : "password"
+                    }
+                    placeholder="Enter your new password"
+                    value={newPassword}
+                    onChange={(event) =>
+                      setNewPassword(
+                        event.target.value
+                      )
+                    }
+                    className="login-input"
+                    autoComplete="new-password"
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    className="login-password-toggle"
+                    onClick={() =>
+                      setShowNewPassword(
+                        (previous) => !previous
+                      )
+                    }
+                  >
+                    {showNewPassword
+                      ? "Hide"
+                      : "Show"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="login-field">
+                <div className="login-label-row">
+                  <label htmlFor="reset-confirm-password">
+                    Confirm new password
+                  </label>
+                </div>
+
+                <div className="login-control">
+                  <input
+                    id="reset-confirm-password"
+                    type={
+                      showConfirmPassword
+                        ? "text"
+                        : "password"
+                    }
+                    placeholder="Confirm your new password"
+                    value={confirmPassword}
+                    onChange={(event) =>
+                      setConfirmPassword(
+                        event.target.value
+                      )
+                    }
+                    className="login-input"
+                    autoComplete="new-password"
+                    required
+                  />
+
+                  <button
+                    type="button"
+                    className="login-password-toggle"
+                    onClick={() =>
+                      setShowConfirmPassword(
+                        (previous) => !previous
+                      )
+                    }
+                  >
+                    {showConfirmPassword
+                      ? "Hide"
+                      : "Show"}
+                  </button>
+                </div>
+              </div>
+
+              {message && (
+                <div
+                  className="login-error"
+                  role="alert"
+                >
+                  <div className="login-error-content">
+                    <span>{message}</span>
+                  </div>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                className="login-submit login-submit-ready"
+                disabled={isLoading}
+              >
+                {isLoading
+                  ? "Resetting password..."
+                  : "Reset Password"}
+              </button>
+
+              <button
+                type="button"
+                className="login-back-button"
+                onClick={switchToLogin}
+              >
+                Back to sign in
+              </button>
+            </form>
+
+            <div className="login-security">
+              <span
+                className="login-security-icon"
+                aria-hidden="true"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <path
+                    d="M12 3 5 6v5c0 4.7 2.8 8.5 7 10 4.2-1.5 7-5.3 7-10V6l-7-3Z"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinejoin="round"
+                  />
+
+                  <path
+                    d="m9 12 2 2 4-4"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+
+              <span>
+                Your healthcare information is
+                protected and securely stored.
+              </span>
+            </div>
+          </div>
+
+          <p className="login-footer">
+            Digital Immunisation
+            <span>•</span>
+            Healthcare access
+          </p>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="login-page">
@@ -110,7 +767,6 @@ function Login() {
 
       <section className="login-container">
         <div className="login-card">
-
           <div
             className="login-card-accent"
             aria-hidden="true"
@@ -169,9 +825,7 @@ function Login() {
               Welcome back
             </span>
 
-            <h1>
-              Sign in to your account
-            </h1>
+            <h1>Sign in to your account</h1>
 
             <p>
               Access your secure healthcare
@@ -183,7 +837,6 @@ function Login() {
             className="login-form"
             onSubmit={handleLogin}
           >
-
             <div className="login-field">
               <div className="login-label-row">
                 <label htmlFor="login-role">
@@ -337,6 +990,7 @@ function Login() {
                   value={email}
                   onChange={(event) => {
                     setEmail(event.target.value);
+
                     if (message) {
                       setMessage("");
                     }
@@ -369,6 +1023,7 @@ function Login() {
                           : ""
                       }
                     />
+
                     <span
                       className={
                         password.length >= 6
@@ -376,6 +1031,7 @@ function Login() {
                           : ""
                       }
                     />
+
                     <span
                       className={
                         password.length >= 4
@@ -383,6 +1039,7 @@ function Login() {
                           : ""
                       }
                     />
+
                     {password.length >= 8
                       ? "Strong"
                       : password.length >= 6
@@ -444,6 +1101,7 @@ function Login() {
                   value={password}
                   onChange={(event) => {
                     setPassword(event.target.value);
+
                     if (message) {
                       setMessage("");
                     }
@@ -537,6 +1195,18 @@ function Login() {
               </div>
             </div>
 
+            <div className="login-forgot-password">
+              <button
+                type="button"
+                onClick={() => {
+                  setMode("forgot");
+                  setMessage("");
+                }}
+              >
+                Forgot password?
+              </button>
+            </div>
+
             {message && (
               <div
                 className="login-error"
@@ -579,9 +1249,7 @@ function Login() {
                     Sign in unsuccessful
                   </strong>
 
-                  <span>
-                    {message}
-                  </span>
+                  <span>{message}</span>
                 </div>
 
                 <button
@@ -614,15 +1282,11 @@ function Login() {
                     aria-hidden="true"
                   />
 
-                  <span>
-                    Signing in...
-                  </span>
+                  <span>Signing in...</span>
                 </>
               ) : (
                 <>
-                  <span>
-                    Sign in
-                  </span>
+                  <span>Sign in</span>
 
                   <svg
                     viewBox="0 0 24 24"

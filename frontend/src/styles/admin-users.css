@@ -738,3 +738,100 @@
     transition: none;
   }
 }
+.admin-content td:last-child button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-height: 36px;
+
+  padding: 7px 14px;
+
+  color: #b42318;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fffafa 0%,
+      #fff5f5 100%
+    );
+
+  border: 1px solid #f0c3c1;
+
+  border-radius: 8px;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 2px 5px rgba(185, 28, 28, 0.06);
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.admin-content td:last-child button:hover {
+  color: #ffffff;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc4b43 0%,
+      #c9342d 100%
+    );
+
+  border-color: #c9342d;
+
+  box-shadow:
+    0 5px 12px rgba(185, 28, 28, 0.18);
+
+  transform: translateY(-1px);
+}
+
+
+.admin-content td:last-child button:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 2px 5px rgba(185, 28, 28, 0.12);
+}
+
+
+.admin-content td:last-child button:focus-visible {
+  outline:
+    3px solid rgba(185, 28, 28, 0.16);
+
+  outline-offset: 3px;
+}
+
+
+@media (max-width: 550px) {
+
+  .admin-content td:last-child button {
+    min-height: 34px;
+
+    padding: 7px 12px;
+
+    font-size: 12.5px;
+  }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+  .admin-content td:last-child button {
+    transition: none;
+  }
+}

@@ -14,6 +14,11 @@ class AppointmentStatusUpdate(BaseModel):
     status: str
 
 
+class AppointmentReschedule(BaseModel):
+    appointment_date: date
+    appointment_time: time
+
+
 class AppointmentResponse(BaseModel):
     id: int
     patient_id: int

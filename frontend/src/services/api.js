@@ -26,6 +26,64 @@ export async function loginUser(email, password) {
   return data;
 }
 
+export async function forgotPassword(email) {
+  const response = await fetch(
+    `${API_BASE_URL}/api/auth/forgot-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to create password reset request."
+    );
+  }
+
+  return data;
+}
+
+export async function resetPassword(
+  token,
+  newPassword,
+  confirmPassword
+) {
+  const response = await fetch(
+    `${API_BASE_URL}/api/auth/reset-password`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to reset password."
+    );
+  }
+
+  return data;
+}
+
 export async function getMyUser() {
   const token = localStorage.getItem("access_token");
 
@@ -43,7 +101,8 @@ export async function getMyUser() {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to load current user."
+      data.detail ||
+        "Failed to load current user."
     );
   }
 
@@ -67,7 +126,90 @@ export async function getMyProfile() {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to load profile."
+      data.detail ||
+        "Failed to load profile."
+    );
+  }
+
+  return data;
+}
+
+export async function createMyProfile(
+  firstName,
+  lastName,
+  dateOfBirth,
+  gender,
+  phone,
+  address
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/patients/me`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        date_of_birth: dateOfBirth,
+        gender,
+        phone,
+        address,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to create patient profile."
+    );
+  }
+
+  return data;
+}
+
+export async function updateMyProfile(
+  firstName,
+  lastName,
+  dateOfBirth,
+  gender,
+  phone,
+  address
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/patients/me`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        first_name: firstName,
+        last_name: lastName,
+        date_of_birth: dateOfBirth,
+        gender,
+        phone,
+        address,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to update patient profile."
     );
   }
 
@@ -155,6 +297,67 @@ export async function createAppointment(
     throw new Error(
       data.detail ||
         "Failed to create appointment."
+    );
+  }
+
+  return data;
+}
+
+export async function cancelAppointment(
+  appointmentId
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/appointments/${appointmentId}/cancel`,
+    {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to cancel appointment."
+    );
+  }
+
+  return data;
+}
+
+export async function rescheduleAppointment(
+  appointmentId,
+  appointmentDate,
+  appointmentTime
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/appointments/${appointmentId}/reschedule`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        appointment_date: appointmentDate,
+        appointment_time: appointmentTime,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to reschedule appointment."
     );
   }
 
@@ -277,6 +480,31 @@ export async function createUser(
     throw new Error(
       data.detail ||
         "Failed to create user."
+    );
+  }
+
+  return data;
+}
+
+export async function deleteUser(userId) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/users/${userId}`,
+    {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to delete patient account."
     );
   }
 
@@ -589,7 +817,9 @@ export async function downloadMyCertificate() {
   window.URL.revokeObjectURL(url);
 }
 
-export async function createNotification(notificationData) {
+export async function createNotification(
+  notificationData
+) {
   const token = localStorage.getItem("access_token");
 
   const response = await fetch(
@@ -608,7 +838,8 @@ export async function createNotification(notificationData) {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to send notification."
+      data.detail ||
+        "Failed to send notification."
     );
   }
 
@@ -632,7 +863,8 @@ export async function getMyNotifications() {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to load notifications."
+      data.detail ||
+        "Failed to load notifications."
     );
   }
 
@@ -685,6 +917,81 @@ export async function getAllMissedDoses() {
     throw new Error(
       data.detail ||
         "Failed to load missed-dose alerts."
+    );
+  }
+
+  return data;
+}
+
+export async function changeMyPassword(
+  currentPassword,
+  newPassword,
+  confirmPassword
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/users/me/password`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        current_password: currentPassword,
+        new_password: newPassword,
+        confirm_password: confirmPassword,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to change password."
+    );
+  }
+
+  return data;
+}
+export async function getAuditLogs() {
+  const response = await fetch(
+    `${API_BASE_URL}/api/audit-logs`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail || "Failed to fetch audit logs."
+    );
+  }
+
+  return data;
+}
+export async function getLoginHistory() {
+  const response = await fetch(
+    `${API_BASE_URL}/api/login-history`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail || "Failed to fetch login history."
     );
   }
 

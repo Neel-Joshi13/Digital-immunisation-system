@@ -15,6 +15,9 @@ from routers.ai import router as ai_router
 from routers.vaccination_schedules import router as vaccination_schedule_router
 from routers.certificates import router as certificates_router
 from routers import notifications
+from routers import audit_logs
+from routers import login_history
+
 
 app = FastAPI(
     title="Digital Immunisation API",
@@ -92,6 +95,9 @@ app.include_router(certificates_router)
 
 app.include_router(notifications.router)
 
+app.include_router(audit_logs.router)
+
+app.include_router(login_history.router)
 
 
 @app.get("/")
@@ -100,7 +106,6 @@ def root():
     return {
         "message": "Digital Immunisation API is running"
     }
-
 
 
 @app.get("/health")

@@ -6,7 +6,12 @@ from database.connection import get_db
 from database.models.patient import Patient
 from database.models.immunisation import ImmunisationRecord
 from database.models.user import User
-from schemas.patient import PatientCreate, PatientResponse
+from schemas.patient import (
+    PatientCreate,
+    PatientProfileCreate,
+    PatientProfileUpdate,
+    PatientResponse,
+)
 from schemas.missed_dose import MissedDoseResponse
 from services.auth import get_current_user, require_role
 from services.missed_dose import get_patient_missed_doses
@@ -59,6 +64,47 @@ def create_patient(
     return patient
 
 
+@router.post(
+    "/me",
+    response_model=PatientResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_my_profile(
+    profile_data: PatientProfileCreate,
+    current_user: User = Depends(
+        require_role("PATIENT")
+    ),
+    db: Session = Depends(get_db),
+):
+    existing_patient = db.scalar(
+        select(Patient).where(
+            Patient.user_id == current_user.id
+        )
+    )
+
+    if existing_patient:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="A patient profile already exists for this account.",
+        )
+
+    patient = Patient(
+        user_id=current_user.id,
+        first_name=profile_data.first_name,
+        last_name=profile_data.last_name,
+        date_of_birth=profile_data.date_of_birth,
+        gender=profile_data.gender,
+        phone=profile_data.phone,
+        address=profile_data.address,
+    )
+
+    db.add(patient)
+    db.commit()
+    db.refresh(patient)
+
+    return patient
+
+
 @router.get(
     "/me",
     response_model=PatientResponse,
@@ -78,6 +124,42 @@ def get_my_profile(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Patient profile not found.",
         )
+
+    return patient
+
+
+@router.patch(
+    "/me",
+    response_model=PatientResponse,
+)
+def update_my_profile(
+    profile_data: PatientProfileUpdate,
+    current_user: User = Depends(
+        require_role("PATIENT")
+    ),
+    db: Session = Depends(get_db),
+):
+    patient = db.scalar(
+        select(Patient).where(
+            Patient.user_id == current_user.id
+        )
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient profile not found.",
+        )
+
+    update_data = profile_data.model_dump(
+        exclude_unset=True
+    )
+
+    for field, value in update_data.items():
+        setattr(patient, field, value)
+
+    db.commit()
+    db.refresh(patient)
 
     return patient
 
