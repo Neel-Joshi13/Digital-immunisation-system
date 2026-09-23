@@ -25,6 +25,11 @@ def create_tables():
         for column in inspector.get_columns("vaccines")
     }
 
+    appointment_columns = {
+        column["name"]
+        for column in inspector.get_columns("appointments")
+    }
+
     with engine.begin() as connection:
         if "source_name" not in vaccine_columns:
             connection.execute(
@@ -42,6 +47,26 @@ def create_tables():
                     """
                     ALTER TABLE vaccines
                     ADD source_url NVARCHAR(500) NULL
+                    """
+                )
+            )
+
+        if "vaccine_id" not in appointment_columns:
+            connection.execute(
+                text(
+                    """
+                    ALTER TABLE appointments
+                    ADD vaccine_id INT NULL
+                    """
+                )
+            )
+
+        if "status_reason" not in appointment_columns:
+            connection.execute(
+                text(
+                    """
+                    ALTER TABLE appointments
+                    ADD status_reason NVARCHAR(255) NULL
                     """
                 )
             )

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../styles/certificate-verification.css";
 
-const API_BASE_URL = "http://10.80.224.214:8000";
+const API_BASE_URL = "";
 
 function CertificateVerification() {
   const { token } = useParams();
@@ -65,7 +65,6 @@ function CertificateVerification() {
   return (
     <div className="certificate-verification-page">
       <div className="certificate-verification-card">
-
         <div className="certificate-status-icon valid">
           ✓
         </div>
@@ -77,7 +76,6 @@ function CertificateVerification() {
         </p>
 
         <div className="certificate-details">
-
           <div className="certificate-detail">
             <span>Patient</span>
             <strong>
@@ -93,18 +91,37 @@ function CertificateVerification() {
           </div>
 
           <div className="certificate-detail">
-            <span>Vaccination Records</span>
+            <span>Vaccine</span>
             <strong>
-              {certificate.vaccination_count}
+              {certificate.vaccination.vaccine}
             </strong>
           </div>
 
+          <div className="certificate-detail">
+            <span>Dose Number</span>
+            <strong>
+              {certificate.vaccination.dose_number}
+            </strong>
+          </div>
+
+          <div className="certificate-detail">
+            <span>Date Administered</span>
+            <strong>
+              {certificate.vaccination.date_administered}
+            </strong>
+          </div>
+
+          <div className="certificate-detail">
+            <span>Administered By</span>
+            <strong>
+              {certificate.vaccination.administered_by}
+            </strong>
+          </div>
         </div>
 
         <div className="certificate-footer">
           Digital Immunisation
         </div>
-
       </div>
     </div>
   );

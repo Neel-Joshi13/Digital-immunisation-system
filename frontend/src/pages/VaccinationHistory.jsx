@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
+
 import {
   getMyImmunisations,
   downloadMyCertificate,
 } from "../services/api";
+
 import { useLanguage } from "../context/LanguageContext";
+
 import "../styles/vaccination-history.css";
+
 
 function VaccinationHistory() {
   const { language } = useLanguage();
 
   const [records, setRecords] = useState([]);
   const [message, setMessage] = useState("");
+  const [downloadingId, setDownloadingId] =
+    useState(null);
 
   const text = {
     en: {
@@ -18,16 +24,20 @@ function VaccinationHistory() {
       subtitle:
         "View your vaccination records and immunisation history.",
       records: "Immunisation Records",
-      completedDoses: "Your completed vaccination doses",
+      completedDoses:
+        "Your completed vaccination doses",
       noRecords: "No vaccination records",
       noRecordsDescription:
         "No vaccination records have been found for your account.",
       vaccine: "Vaccine",
       dose: "Dose",
-      dateAdministered: "Date Administered",
+      dateAdministered:
+        "Date Administered",
+      certificate:
+        "Download Certificate",
+      downloading:
+        "Downloading...",
       notAvailable: "N/A",
-      downloadCertificate:
-        "Download Vaccination Certificate",
       certificateError:
         "Failed to download vaccination certificate.",
     },
@@ -37,16 +47,21 @@ function VaccinationHistory() {
       subtitle:
         "अपने टीकाकरण रिकॉर्ड और टीकाकरण इतिहास देखें।",
       records: "टीकाकरण रिकॉर्ड",
-      completedDoses: "आपकी पूरी की गई टीकाकरण खुराक",
-      noRecords: "कोई टीकाकरण रिकॉर्ड नहीं",
+      completedDoses:
+        "आपकी पूरी की गई टीकाकरण खुराक",
+      noRecords:
+        "कोई टीकाकरण रिकॉर्ड नहीं",
       noRecordsDescription:
         "आपके खाते के लिए कोई टीकाकरण रिकॉर्ड नहीं मिला।",
       vaccine: "टीका",
       dose: "खुराक",
-      dateAdministered: "टीका लगाए जाने की तारीख",
+      dateAdministered:
+        "टीका लगाए जाने की तारीख",
+      certificate:
+        "प्रमाणपत्र डाउनलोड करें",
+      downloading:
+        "डाउनलोड हो रहा है...",
       notAvailable: "उपलब्ध नहीं",
-      downloadCertificate:
-        "टीकाकरण प्रमाणपत्र डाउनलोड करें",
       certificateError:
         "टीकाकरण प्रमाणपत्र डाउनलोड करने में समस्या हुई।",
     },
@@ -57,7 +72,8 @@ function VaccinationHistory() {
   useEffect(() => {
     async function loadHistory() {
       try {
-        const data = await getMyImmunisations();
+        const data =
+          await getMyImmunisations();
 
         setRecords(data);
       } catch (error) {
@@ -68,25 +84,31 @@ function VaccinationHistory() {
     loadHistory();
   }, []);
 
-  async function handleDownloadCertificate() {
+  async function handleDownloadCertificate(
+    immunisationId
+  ) {
     try {
-      await downloadMyCertificate();
+      setDownloadingId(immunisationId);
+
+      await downloadMyCertificate(
+        immunisationId
+      );
     } catch (error) {
       alert(
         error.message ||
           currentText.certificateError
       );
+    } finally {
+      setDownloadingId(null);
     }
   }
 
   if (message) {
     return (
       <div className="vaccination-history">
-
         <div className="vaccination-history-error">
           {message}
         </div>
-
       </div>
     );
   }
@@ -192,6 +214,10 @@ function VaccinationHistory() {
                       {currentText.dateAdministered}
                     </th>
 
+                    <th>
+                      Certificate
+                    </th>
+
                   </tr>
 
                 </thead>
@@ -245,6 +271,29 @@ function VaccinationHistory() {
                         {record.date_administered}
                       </td>
 
+                      <td>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleDownloadCertificate(
+                              record.id
+                            )
+                          }
+                          className="download-certificate-button"
+                          disabled={
+                            downloadingId ===
+                            record.id
+                          }
+                        >
+                          {downloadingId ===
+                          record.id
+                            ? currentText.downloading
+                            : currentText.certificate}
+                        </button>
+
+                      </td>
+
                     </tr>
 
                   ))}
@@ -252,18 +301,6 @@ function VaccinationHistory() {
                 </tbody>
 
               </table>
-
-            </div>
-
-            <div className="vaccination-history-certificate">
-
-              <button
-                type="button"
-                onClick={handleDownloadCertificate}
-                className="download-certificate-button"
-              >
-                {currentText.downloadCertificate}
-              </button>
 
             </div>
 

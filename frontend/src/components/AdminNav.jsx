@@ -136,6 +136,18 @@ function AdminNav() {
 
 
         <Link
+          to="/admin/appointments"
+          className={
+            location.pathname === "/admin/appointments"
+              ? "admin-nav-link active"
+              : "admin-nav-link"
+          }
+        >
+          Appointment Management
+        </Link>
+
+
+        <Link
           to="/admin/audit-logs"
           className={
             location.pathname === "/admin/audit-logs"

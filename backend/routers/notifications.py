@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -14,6 +16,26 @@ router = APIRouter(
     prefix="/api/notifications",
     tags=["Notifications"],
 )
+
+
+def format_notification(notification):
+    created_at = notification.created_at + timedelta(
+        hours=5,
+        minutes=30,
+    )
+
+    return {
+        "id": notification.id,
+        "patient_id": notification.patient_id,
+        "admin_id": notification.admin_id,
+        "title": notification.title,
+        "message": notification.message,
+        "notification_type": notification.notification_type,
+        "is_read": notification.is_read,
+        "created_at": created_at.strftime(
+            "%d/%m/%Y, %I:%M:%S %p"
+        ),
+    }
 
 
 @router.post(
@@ -48,7 +70,7 @@ def create_notification(
     db.commit()
     db.refresh(notification)
 
-    return notification
+    return format_notification(notification)
 
 
 @router.get(
@@ -76,7 +98,10 @@ def get_my_notifications(
         .order_by(Notification.created_at.desc())
     ).all()
 
-    return notifications
+    return [
+        format_notification(notification)
+        for notification in notifications
+    ]
 
 
 @router.patch(
@@ -117,4 +142,4 @@ def mark_notification_as_read(
     db.commit()
     db.refresh(notification)
 
-    return notification
+    return format_notification(notification)

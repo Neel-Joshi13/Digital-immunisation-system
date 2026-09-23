@@ -1,19 +1,28 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from database.connection import get_db
-from database.models.patient import Patient
+from database.models.appointment import Appointment
+from database.models.healthcare_centre import HealthcareCentre
 from database.models.immunisation import ImmunisationRecord
+from database.models.patient import Patient
 from database.models.user import User
+from database.models.vaccine import Vaccine
+from schemas.missed_dose import MissedDoseResponse
 from schemas.patient import (
     PatientCreate,
     PatientProfileCreate,
     PatientProfileUpdate,
     PatientResponse,
 )
-from schemas.missed_dose import MissedDoseResponse
 from services.auth import get_current_user, require_role
+from services.email import (
+    send_missed_vaccination_email,
+    send_upcoming_vaccination_email,
+)
 from services.missed_dose import get_patient_missed_doses
 
 
@@ -248,8 +257,7 @@ def get_all_missed_doses(
     ),
 ):
     patients = db.scalars(
-        select(Patient)
-        .order_by(
+        select(Patient).order_by(
             Patient.last_name,
             Patient.first_name,
         )
@@ -263,16 +271,191 @@ def get_all_missed_doses(
             patient=patient,
         )
 
-        if missed_doses:
-            alerts.append(
-                {
-                    "patient_id": patient.id,
-                    "user_id": patient.user_id,
-                    "first_name": patient.first_name,
-                    "last_name": patient.last_name,
-                    "phone": patient.phone,
-                    "missed_doses": missed_doses,
-                }
-            )
+        if not missed_doses:
+            continue
+
+        user = db.get(
+            User,
+            patient.user_id,
+        )
+
+        alerts.append(
+            {
+                "patient_id": patient.id,
+                "user_id": patient.user_id,
+                "first_name": patient.first_name,
+                "last_name": patient.last_name,
+                "phone": patient.phone,
+                "email": (
+                    user.email
+                    if user
+                    else None
+                ),
+                "missed_doses": missed_doses,
+            }
+        )
 
     return alerts
+
+
+@router.post(
+    "/missed-doses/{patient_id}/email",
+)
+def send_missed_dose_email(
+    patient_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_role("ADMIN")
+    ),
+):
+    patient = db.get(
+        Patient,
+        patient_id,
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient not found.",
+        )
+
+    user = db.get(
+        User,
+        patient.user_id,
+    )
+
+    if user is None or not user.email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Patient email address not found.",
+        )
+
+    missed_doses = get_patient_missed_doses(
+        db=db,
+        patient=patient,
+    )
+
+    if not missed_doses:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No missed vaccination doses found for this patient.",
+        )
+
+    patient_name = (
+        f"{patient.first_name} {patient.last_name}".strip()
+    )
+
+    send_missed_vaccination_email(
+        recipient_email=user.email,
+        patient_name=patient_name,
+        missed_doses=missed_doses,
+    )
+
+    return {
+        "message": "Missed vaccination email sent successfully."
+    }
+
+
+@router.post(
+    "/upcoming-appointments/{appointment_id}/email",
+)
+def send_upcoming_vaccination_email_endpoint(
+    appointment_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        require_role("ADMIN")
+    ),
+):
+    appointment = db.scalar(
+        select(Appointment).where(
+            Appointment.id == appointment_id
+        )
+    )
+
+    if appointment is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Appointment not found.",
+        )
+
+    if appointment.status != "SCHEDULED":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Only scheduled appointments can receive an upcoming vaccination reminder.",
+        )
+
+    appointment_datetime = datetime.combine(
+        appointment.appointment_date,
+        appointment.appointment_time,
+    )
+
+    if appointment_datetime <= datetime.now():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This vaccination appointment is not upcoming.",
+        )
+
+    patient = db.get(
+        Patient,
+        appointment.patient_id,
+    )
+
+    if patient is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Patient not found.",
+        )
+
+    user = db.get(
+        User,
+        patient.user_id,
+    )
+
+    if user is None or not user.email:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Patient email address not found.",
+        )
+
+    vaccine = db.get(
+        Vaccine,
+        appointment.vaccine_id,
+    )
+
+    if vaccine is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Vaccine not found.",
+        )
+
+    centre = db.get(
+        HealthcareCentre,
+        appointment.centre_id,
+    )
+
+    if centre is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Healthcare centre not found.",
+        )
+
+    patient_name = (
+        f"{patient.first_name} {patient.last_name}".strip()
+    )
+
+    send_upcoming_vaccination_email(
+        recipient_email=user.email,
+        patient_name=patient_name,
+        vaccine_name=vaccine.name,
+        appointment_date=appointment.appointment_date.strftime(
+            "%d %B %Y"
+        ),
+        appointment_time=appointment.appointment_time.strftime(
+            "%I:%M %p"
+        ),
+        centre_name=centre.name,
+    )
+
+    return {
+        "message": "Upcoming vaccination email sent successfully."
+    }

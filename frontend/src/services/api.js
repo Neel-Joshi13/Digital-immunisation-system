@@ -268,6 +268,7 @@ export async function getMyAppointments() {
 
 export async function createAppointment(
   centreId,
+  vaccineId,
   appointmentDate,
   appointmentTime,
   reason
@@ -284,6 +285,7 @@ export async function createAppointment(
       },
       body: JSON.stringify({
         centre_id: Number(centreId),
+        vaccine_id: Number(vaccineId),
         appointment_date: appointmentDate,
         appointment_time: appointmentTime,
         reason: reason,
@@ -358,6 +360,65 @@ export async function rescheduleAppointment(
     throw new Error(
       data.detail ||
         "Failed to reschedule appointment."
+    );
+  }
+
+  return data;
+}
+
+export async function getAllAppointments() {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/appointments`,
+    {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to load appointments."
+    );
+  }
+
+  return data;
+}
+
+export async function updateAppointmentStatus(
+  appointmentId,
+  status,
+  statusReason
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/appointments/${appointmentId}/status`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        status,
+        status_reason: statusReason || null,
+      }),
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to update appointment status."
     );
   }
 
@@ -773,11 +834,13 @@ export async function askAIAssistant(message) {
   return data;
 }
 
-export async function downloadMyCertificate() {
+export async function downloadMyCertificate(
+  immunisationId
+) {
   const token = localStorage.getItem("access_token");
 
   const response = await fetch(
-    `${API_BASE_URL}/api/certificates/me/pdf`,
+    `${API_BASE_URL}/api/certificates/${immunisationId}/pdf`,
     {
       method: "GET",
       headers: {
@@ -806,7 +869,8 @@ export async function downloadMyCertificate() {
   const link = document.createElement("a");
 
   link.href = url;
-  link.download = "vaccination-certificate.pdf";
+  link.download =
+    `vaccination-certificate-${immunisationId}.pdf`;
 
   document.body.appendChild(link);
 
@@ -923,6 +987,60 @@ export async function getAllMissedDoses() {
   return data;
 }
 
+export async function sendMissedVaccinationEmail(
+  patientId
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/patients/missed-doses/${patientId}/email`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to send missed vaccination email."
+    );
+  }
+
+  return data;
+}
+
+export async function sendUpcomingVaccinationEmail(
+  appointmentId
+) {
+  const token = localStorage.getItem("access_token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/api/patients/upcoming-appointments/${appointmentId}/email`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data.detail ||
+        "Failed to send upcoming vaccination email."
+    );
+  }
+
+  return data;
+}
+
 export async function changeMyPassword(
   currentPassword,
   newPassword,
@@ -957,6 +1075,7 @@ export async function changeMyPassword(
 
   return data;
 }
+
 export async function getAuditLogs() {
   const response = await fetch(
     `${API_BASE_URL}/api/audit-logs`,
@@ -971,12 +1090,14 @@ export async function getAuditLogs() {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to fetch audit logs."
+      data.detail ||
+        "Failed to fetch audit logs."
     );
   }
 
   return data;
 }
+
 export async function getLoginHistory() {
   const response = await fetch(
     `${API_BASE_URL}/api/login-history`,
@@ -991,7 +1112,8 @@ export async function getLoginHistory() {
 
   if (!response.ok) {
     throw new Error(
-      data.detail || "Failed to fetch login history."
+      data.detail ||
+        "Failed to fetch login history."
     );
   }
 

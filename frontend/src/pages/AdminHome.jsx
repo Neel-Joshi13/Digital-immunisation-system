@@ -80,6 +80,18 @@ function AdminHome() {
                 official sources.
               </p>
             </Link>
+
+            <Link
+              to="/admin/appointments"
+              className="admin-card"
+            >
+              <h3>Appointment Management</h3>
+
+              <p>
+                View and manage patient vaccination
+                appointments and their status.
+              </p>
+            </Link>
           </div>
         </section>
       </main>

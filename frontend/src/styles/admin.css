@@ -1068,15 +1068,17 @@
 
   justify-content: space-between;
 
-  gap: 20px;
+  gap: 24px;
 
-  padding: 18px;
+  padding: 18px 22px;
 
   background: #ffffff;
 
-  border: 1px solid #e3e8ef;
+  border: 1px solid #d8e0ea;
 
   border-radius: 12px;
+
+  box-sizing: border-box;
 
   box-shadow:
     0 2px 5px rgba(15, 23, 42, 0.025);
@@ -1096,20 +1098,62 @@
   transform: translateY(-1px);
 }
 
-.admin-missed-dose-item strong {
+.admin-missed-dose-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.admin-missed-dose-patient {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  width: 100%;
+
+  margin-bottom: 12px;
+}
+
+.admin-missed-dose-patient strong {
+  flex-shrink: 0;
+
   color: #17233a;
 
   font-size: 15px;
 
   font-weight: 750;
+
+  white-space: nowrap;
 }
 
-.admin-missed-dose-item > div > p {
-  margin: 5px 0 12px;
+.admin-patient-id {
+  flex-shrink: 0;
+
+  margin: 0;
 
   color: #7b8799;
 
   font-size: 13px;
+
+  white-space: nowrap;
+}
+
+.admin-email {
+  min-width: 0;
+
+  margin: 0;
+
+  color: #667085;
+
+  font-size: 13px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
 }
 
 .missed-dose-details {
@@ -1118,6 +1162,8 @@
   flex-wrap: wrap;
 
   gap: 8px;
+
+  width: 100%;
 }
 
 .missed-dose-detail {
@@ -1125,23 +1171,31 @@
 
   align-items: center;
 
-  gap: 7px;
+  gap: 8px;
 
-  padding: 7px 10px;
+  max-width: 100%;
 
-  background: #fff7f7;
+  padding: 8px 11px;
 
-  border: 1px solid #f5d7d9;
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
 
   border-radius: 8px;
+
+  box-sizing: border-box;
 
   font-size: 12px;
 }
 
 .missed-dose-detail strong {
+  flex-shrink: 0;
+
   color: #344054;
 
   font-size: 12px;
+
+  white-space: nowrap;
 }
 
 .missed-dose-detail span {
@@ -1150,19 +1204,64 @@
   font-size: 12px;
 }
 
-.admin-message-button {
+.admin-missed-dose-actions,
+.admin-upcoming-actions {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 8px;
+
+  flex-shrink: 0;
+
+  align-self: flex-start;
+
+  margin-top: 0;
+}
+
+.admin-message-button,
+.admin-email-button {
   display: inline-flex;
 
   align-items: center;
 
   justify-content: center;
 
-  flex-shrink: 0;
+  width: auto;
 
-  min-height: 40px;
+  min-width: 108px;
 
-  padding: 9px 15px;
+  height: 38px;
 
+  padding: 7px 13px;
+
+  border-radius: 8px;
+
+  box-sizing: border-box;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.admin-message-button {
   color: #ffffff;
 
   background:
@@ -1175,23 +1274,8 @@
 
   border: 1px solid #2563eb;
 
-  border-radius: 9px;
-
-  font-family: inherit;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-
   box-shadow:
     0 4px 10px rgba(37, 99, 235, 0.14);
-
-  transition:
-    background 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
 }
 
 .admin-message-button:hover {
@@ -1204,63 +1288,166 @@
     );
 
   box-shadow:
-    0 7px 16px rgba(37, 99, 235, 0.2);
+    0 6px 14px rgba(37, 99, 235, 0.2);
 
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
-.admin-message-button:active {
-  transform: translateY(0);
-}
-
-.admin-missed-dose-empty {
-  display: flex;
-
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 16px;
-
-  color: #166534;
+.admin-email-button {
+  color: #ffffff;
 
   background:
     linear-gradient(
       135deg,
-      #f3fcf5 0%,
-      #ecfaef 100%
+      #22a06b 0%,
+      #198754 52%,
+      #157347 100%
     );
 
-  border: 1px solid #b8e6c7;
+  border: 1px solid #198754;
 
-  border-radius: 10px;
-
-  font-size: 14px;
+  box-shadow:
+    0 4px 10px rgba(25, 135, 84, 0.14);
 }
 
-.admin-missed-dose-empty span {
-  display: inline-flex;
+.admin-email-button:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #2ab477 0%,
+      #198754 52%,
+      #157347 100%
+    );
+
+  box-shadow:
+    0 6px 14px rgba(25, 135, 84, 0.2);
+
+  transform: translateY(-1px);
+}
+
+.admin-message-button:active,
+.admin-email-button:active {
+  transform: translateY(0);
+}
+
+.admin-message-button:disabled,
+.admin-email-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.admin-vaccination-section {
+  margin-top: 28px;
+}
+
+.admin-upcoming-vaccination-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.admin-upcoming-vaccination-item {
+  display: flex;
 
   align-items: center;
 
-  justify-content: center;
+  justify-content: space-between;
 
-  width: 27px;
-  height: 27px;
+  gap: 24px;
 
-  color: #ffffff;
+  padding: 18px 22px;
 
-  background: #16a34a;
+  background: #ffffff;
 
-  border-radius: 50%;
+  border: 1px solid #d8e0ea;
 
-  font-size: 14px;
+  border-radius: 12px;
 
-  font-weight: 800;
+  box-sizing: border-box;
+
+  box-shadow:
+    0 2px 5px rgba(15, 23, 42, 0.025);
 }
 
-.admin-missed-dose-empty p {
+.admin-upcoming-vaccination-item > div:first-child {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.admin-upcoming-vaccination-item strong {
+  color: #17233a;
+
+  font-size: 15px;
+
+  font-weight: 750;
+}
+
+.admin-upcoming-vaccination-item p {
+  margin: 5px 0 10px;
+
+  color: #7b8799;
+
+  font-size: 13px;
+}
+
+.admin-upcoming-details {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-top: 10px;
+}
+
+.admin-upcoming-detail {
+  padding: 7px 10px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 6px;
+
+  color: #64748b;
+
+  font-size: 13px;
+}
+
+.admin-missed-dose-empty,
+.admin-upcoming-empty {
+  padding: 22px;
+
+  text-align: center;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 10px;
+
+  color: #64748b;
+}
+
+.admin-missed-dose-empty p,
+.admin-upcoming-empty p {
   margin: 0;
+}
+
+.admin-missed-dose-empty span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #198754;
+
+  font-size: 26px;
 }
 
 .notification-success {
@@ -1503,6 +1690,7 @@
   display: inline-flex;
 
   align-items: center;
+
   justify-content: center;
 
   min-height: 42px;
@@ -1583,6 +1771,7 @@
 .admin-form-group select:focus-visible,
 .admin-form-group textarea:focus-visible,
 .admin-message-button:focus-visible,
+.admin-email-button:focus-visible,
 .notification-modal-close:focus-visible,
 .notification-cancel-button:focus-visible,
 .notification-send-button:focus-visible,
@@ -1754,14 +1943,47 @@
     margin-bottom: 36px;
   }
 
-  .admin-missed-dose-item {
+  .admin-missed-dose-item,
+  .admin-upcoming-vaccination-item {
     flex-direction: column;
+
+    align-items: stretch;
 
     gap: 15px;
   }
 
-  .admin-message-button {
+  .admin-missed-dose-patient {
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 8px 14px;
+  }
+
+  .admin-missed-dose-patient strong {
     width: 100%;
+  }
+
+  .admin-email {
+    max-width: 100%;
+  }
+
+  .admin-missed-dose-actions,
+  .admin-upcoming-actions {
+    width: 100%;
+
+    justify-content: flex-start;
+
+    align-self: stretch;
+
+    margin-top: 0;
+  }
+
+  .admin-message-button,
+  .admin-email-button {
+    width: auto;
+
+    min-width: 105px;
   }
 }
 
@@ -1844,6 +2066,7 @@
 
   .admin-card {
     height: 180px;
+
     min-height: 180px;
 
     padding: 22px;
@@ -1893,16 +2116,65 @@
     font-size: 13px;
   }
 
-  .missed-dose-details {
+  .admin-missed-dose-patient {
+    display: flex;
+
     flex-direction: column;
 
     align-items: flex-start;
+
+    gap: 5px;
+
+    margin-bottom: 10px;
+  }
+
+  .admin-missed-dose-patient strong {
+    width: auto;
+  }
+
+  .admin-patient-id,
+  .admin-email {
+    white-space: normal;
+  }
+
+  .missed-dose-details {
+    flex-direction: column;
+
+    align-items: stretch;
   }
 
   .missed-dose-detail {
     width: 100%;
 
     box-sizing: border-box;
+
+    flex-wrap: wrap;
+  }
+
+  .admin-missed-dose-actions,
+  .admin-upcoming-actions {
+    display: flex;
+
+    flex-direction: row;
+
+    width: 100%;
+
+    justify-content: flex-start;
+
+    gap: 8px;
+
+    align-self: stretch;
+
+    margin-top: 0;
+  }
+
+  .admin-message-button,
+  .admin-email-button {
+    width: auto;
+
+    min-width: 105px;
+
+    height: 38px;
   }
 
   .notification-modal-overlay {
@@ -1934,6 +2206,7 @@
 
   .admin-content {
     padding-left: 14px;
+
     padding-right: 14px;
   }
 
@@ -1953,11 +2226,13 @@
 
   .admin-logout {
     padding-left: 10px;
+
     padding-right: 10px;
   }
 
   .admin-card {
     height: 175px;
+
     min-height: 175px;
 
     padding: 20px;
@@ -1969,6 +2244,22 @@
 
   .admin-missed-dose-item {
     padding: 15px;
+  }
+
+  .admin-missed-dose-actions,
+  .admin-upcoming-actions {
+    flex-wrap: wrap;
+  }
+
+  .admin-message-button,
+  .admin-email-button {
+    min-width: 95px;
+
+    padding-left: 10px;
+
+    padding-right: 10px;
+
+    font-size: 12px;
   }
 }
 
@@ -1986,6 +2277,7 @@
   .admin-form button::before,
   .admin-missed-dose-item,
   .admin-message-button,
+  .admin-email-button,
   .notification-modal-close,
   .notification-cancel-button,
   .notification-send-button {

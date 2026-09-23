@@ -23,6 +23,9 @@ def parse_recommended_age(age_text: str | None):
 
     text = age_text.lower().strip()
 
+    if "birth" in text:
+        return 0
+
     range_match = re.search(
         r"(\d+)\s*[-–]\s*(\d+)\s*months?",
         text,
@@ -59,10 +62,38 @@ def parse_recommended_age(age_text: str | None):
         years = int(year_match.group(1))
         return years * 365
 
-    if "birth" in text:
-        return 0
-
     return None
+
+
+def get_missed_dose_reason(
+    schedule: VaccinationSchedule,
+    due_date: date | None,
+    today: date,
+) -> str | None:
+    if due_date is None:
+        return None
+
+    if today <= due_date:
+        return None
+
+    if schedule.dose_number == 1:
+        if schedule.recommended_age:
+            return (
+                "This dose was recommended at "
+                f"{schedule.recommended_age} and is not "
+                "recorded in the patient's immunisation history."
+            )
+
+        return (
+            "This dose is due and is not recorded in "
+            "the patient's immunisation history."
+        )
+
+    return (
+        "The recommended interval after the previous dose "
+        "has passed, and this dose is not recorded in the "
+        "patient's immunisation history."
+    )
 
 
 def get_patient_missed_doses(
@@ -92,7 +123,10 @@ def get_patient_missed_doses(
     ).all()
 
     completed = {
-        (record.vaccine_id, record.dose_number)
+        (
+            record.vaccine_id,
+            record.dose_number,
+        )
         for record in records
     }
 
@@ -104,7 +138,9 @@ def get_patient_missed_doses(
     results = []
 
     for schedule in schedules:
-        vaccine = vaccine_map.get(schedule.vaccine_id)
+        vaccine = vaccine_map.get(
+            schedule.vaccine_id
+        )
 
         if vaccine is None:
             continue
@@ -118,7 +154,6 @@ def get_patient_missed_doses(
             continue
 
         due_date = None
-        reason = None
 
         if schedule.dose_number == 1:
             recommended_age_days = parse_recommended_age(
@@ -133,11 +168,6 @@ def get_patient_missed_doses(
                     )
                 )
 
-                if today > due_date:
-                    reason = (
-                        "The recommended age for this "
-                        "dose has passed."
-                    )
         else:
             previous_record = next(
                 (
@@ -151,41 +181,45 @@ def get_patient_missed_doses(
                 None,
             )
 
-            if previous_record:
-                if schedule.minimum_interval_days is not None:
-                    due_date = (
-                        previous_record.date_administered
-                        + timedelta(
-                            days=schedule.minimum_interval_days
-                        )
+            if (
+                previous_record
+                and schedule.minimum_interval_days
+                is not None
+            ):
+                due_date = (
+                    previous_record.date_administered
+                    + timedelta(
+                        days=schedule.minimum_interval_days
                     )
+                )
 
-                    if today > due_date:
-                        reason = (
-                            "The minimum interval since "
-                            "the previous dose has passed."
-                        )
+        reason = get_missed_dose_reason(
+            schedule,
+            due_date,
+            today,
+        )
 
-        if reason:
-            results.append(
-                {
-                    "vaccine_id": vaccine.id,
-                    "vaccine_name": vaccine.name,
-                    "dose_number": schedule.dose_number,
-                    "recommended_age": (
-                        schedule.recommended_age
-                    ),
-                    "due_date": due_date,
-                    "days_overdue": (
-                        (today - due_date).days
-                        if due_date
-                        else None
-                    ),
-                    "reason": reason,
-                    "notes": schedule.notes,
-                    "source_name": schedule.source_name,
-                    "source_url": schedule.source_url,
-                }
-            )
+        if reason is None:
+            continue
+
+        results.append(
+            {
+                "vaccine_id": vaccine.id,
+                "vaccine_name": vaccine.name,
+                "dose_number": schedule.dose_number,
+                "recommended_age": (
+                    schedule.recommended_age
+                ),
+                "due_date": (
+                    str(due_date)
+                    if due_date
+                    else None
+                ),
+                "reason": reason,
+                "notes": schedule.notes,
+                "source_name": schedule.source_name,
+                "source_url": schedule.source_url,
+            }
+        )
 
     return results

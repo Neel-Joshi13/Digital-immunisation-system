@@ -17,6 +17,7 @@ import AdminImmunisations from "./pages/AdminImmunisations";
 import AdminVaccinationSchedules from "./pages/AdminVaccinationSchedules";
 import AdminAuditLogs from "./pages/AdminAuditLogs";
 import AdminLoginHistory from "./pages/AdminLoginHistory";
+import AdminAppointments from "./pages/AdminAppointments";
 import VaccineChatbot from "./pages/VaccineChatbot";
 import AIAssistant from "./pages/AIAssistant";
 import CertificateVerification from "./pages/CertificateVerification";
@@ -53,9 +54,18 @@ function App() {
           <Route path="profile" element={<PatientDashboard />} />
           <Route path="vaccinations" element={<VaccinationHistory />} />
           <Route path="appointments" element={<Appointments />} />
-          <Route path="notifications" element={<PatientNotifications />} />
-          <Route path="vaccine-assistant" element={<VaccineChatbot />} />
-          <Route path="ai-assistant" element={<AIAssistant />} />
+          <Route
+            path="notifications"
+            element={<PatientNotifications />}
+          />
+          <Route
+            path="vaccine-assistant"
+            element={<VaccineChatbot />}
+          />
+          <Route
+            path="ai-assistant"
+            element={<AIAssistant />}
+          />
           <Route
             path="schedule"
             element={<PatientVaccinationSchedule />}
@@ -127,6 +137,15 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminVaccinationSchedules />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/appointments"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminAppointments />
             </ProtectedRoute>
           }
         />

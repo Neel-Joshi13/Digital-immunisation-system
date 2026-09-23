@@ -190,13 +190,7 @@ function PatientNotifications() {
                 </p>
 
                 <p className="notification-date">
-                  {new Date(
-                    notification.created_at
-                  ).toLocaleString(
-                    language === "hi"
-                      ? "hi-IN"
-                      : "en-IN"
-                  )}
+                  {notification.created_at}
                 </p>
 
                 {!notification.is_read && (

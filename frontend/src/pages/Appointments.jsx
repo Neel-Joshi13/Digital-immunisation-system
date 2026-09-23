@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import {
   getMyAppointments,
   getCentres,
+  getVaccines,
   createAppointment,
   cancelAppointment,
   rescheduleAppointment,
@@ -17,8 +18,10 @@ function Appointments() {
 
   const [appointments, setAppointments] = useState([]);
   const [centres, setCentres] = useState([]);
+  const [vaccines, setVaccines] = useState([]);
 
   const [centreId, setCentreId] = useState("");
+  const [vaccineId, setVaccineId] = useState("");
   const [appointmentDate, setAppointmentDate] = useState("");
   const [appointmentTime, setAppointmentTime] = useState("");
   const [reason, setReason] = useState("");
@@ -45,6 +48,8 @@ function Appointments() {
       date: "Date",
       time: "Time",
       centre: "Centre",
+      vaccine: "Vaccine",
+      selectVaccine: "Select a vaccine",
       reason: "Reason",
       status: "Status",
       action: "Action",
@@ -87,6 +92,8 @@ function Appointments() {
       date: "तारीख",
       time: "समय",
       centre: "केंद्र",
+      vaccine: "टीका",
+      selectVaccine: "टीका चुनें",
       reason: "कारण",
       status: "स्थिति",
       action: "कार्रवाई",
@@ -136,9 +143,19 @@ function Appointments() {
     }
   }
 
+  async function loadVaccines() {
+    try {
+      const data = await getVaccines();
+      setVaccines(data);
+    } catch (error) {
+      setError(error.message);
+    }
+  }
+
   useEffect(() => {
     loadAppointments();
     loadCentres();
+    loadVaccines();
   }, []);
 
   async function handleSubmit(event) {
@@ -150,6 +167,7 @@ function Appointments() {
     try {
       await createAppointment(
         centreId,
+        vaccineId,
         appointmentDate,
         appointmentTime,
         reason
@@ -158,6 +176,7 @@ function Appointments() {
       setMessage(currentText.success);
 
       setCentreId("");
+      setVaccineId("");
       setAppointmentDate("");
       setAppointmentTime("");
       setReason("");
@@ -666,6 +685,36 @@ function Appointments() {
                     value={centre.id}
                   >
                     {centre.name}
+                  </option>
+                ))}
+              </select>
+
+            </div>
+
+            <div className="appointment-field appointment-field-full">
+
+              <label htmlFor="vaccine">
+                {currentText.vaccine}
+              </label>
+
+              <select
+                id="vaccine"
+                value={vaccineId}
+                onChange={(event) =>
+                  setVaccineId(event.target.value)
+                }
+                required
+              >
+                <option value="">
+                  {currentText.selectVaccine}
+                </option>
+
+                {vaccines.map((vaccine) => (
+                  <option
+                    key={vaccine.id}
+                    value={vaccine.id}
+                  >
+                    {vaccine.name}
                   </option>
                 ))}
               </select>

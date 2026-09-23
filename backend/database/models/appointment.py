@@ -24,6 +24,11 @@ class Appointment(Base):
         nullable=False,
     )
 
+    vaccine_id: Mapped[int] = mapped_column(
+        ForeignKey("vaccines.id"),
+        nullable=False,
+    )
+
     appointment_date: Mapped[date] = mapped_column(
         Date,
         nullable=False,
@@ -45,5 +50,11 @@ class Appointment(Base):
         nullable=False,
     )
 
+    status_reason: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
     patient = relationship("Patient")
     healthcare_centre = relationship("HealthcareCentre")
+    vaccine = relationship("Vaccine")

@@ -8,7 +8,10 @@ import qrcode
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.styles import (
+    ParagraphStyle,
+    getSampleStyleSheet,
+)
 from reportlab.lib.units import mm
 from reportlab.platypus import (
     Image,
@@ -33,14 +36,11 @@ VERIFY_BASE_URL = os.getenv(
 
 def create_certificate_token(
     patient_id: int,
-    immunisation_ids: list[int],
+    immunisation_id: int,
 ) -> str:
-    records = ",".join(
-        str(record_id)
-        for record_id in sorted(immunisation_ids)
+    payload = (
+        f"{patient_id}:{immunisation_id}"
     )
-
-    payload = f"{patient_id}:{records}"
 
     signature = hmac.new(
         CERTIFICATE_SECRET.encode(),
@@ -48,17 +48,21 @@ def create_certificate_token(
         hashlib.sha256,
     ).hexdigest()[:24]
 
-    return f"{patient_id}-{signature}"
+    return (
+        f"{patient_id}-"
+        f"{immunisation_id}-"
+        f"{signature}"
+    )
 
 
 def verify_certificate_token(
     patient_id: int,
-    immunisation_ids: list[int],
+    immunisation_id: int,
     token: str,
 ) -> bool:
     expected = create_certificate_token(
         patient_id,
-        immunisation_ids,
+        immunisation_id,
     )
 
     return hmac.compare_digest(
@@ -69,8 +73,9 @@ def verify_certificate_token(
 
 def generate_certificate_pdf(
     patient,
-    immunisations,
+    immunisation,
     certificate_token: str,
+    certificate_info: dict,
 ) -> bytes:
     buffer = io.BytesIO()
 
@@ -100,6 +105,15 @@ def generate_certificate_pdf(
         alignment=TA_CENTER,
         fontSize=10,
         leading=14,
+    )
+
+    healthcare_style = ParagraphStyle(
+        "HealthcareInformation",
+        parent=styles["Normal"],
+        alignment=TA_CENTER,
+        fontSize=9,
+        leading=13,
+        textColor=colors.HexColor("#475569"),
     )
 
     heading_style = ParagraphStyle(
@@ -134,7 +148,38 @@ def generate_certificate_pdf(
         )
     )
 
-    story.append(Spacer(1, 12))
+    story.append(
+        Spacer(
+            1,
+            4,
+        )
+    )
+
+    story.append(
+        Paragraph(
+            certificate_info[
+                "healthcare_service"
+            ],
+            healthcare_style,
+        )
+    )
+
+    story.append(
+        Paragraph(
+            "Issued by "
+            + certificate_info[
+                "issuing_authority"
+            ],
+            healthcare_style,
+        )
+    )
+
+    story.append(
+        Spacer(
+            1,
+            12,
+        )
+    )
 
     story.append(
         Paragraph(
@@ -144,15 +189,31 @@ def generate_certificate_pdf(
     )
 
     patient_data = [
-        ["Name", f"{patient.first_name} {patient.last_name}"],
-        ["Date of Birth", str(patient.date_of_birth)],
-        ["Gender", patient.gender],
-        ["Phone", patient.phone],
+        [
+            "Name",
+            f"{patient.first_name} "
+            f"{patient.last_name}",
+        ],
+        [
+            "Date of Birth",
+            str(patient.date_of_birth),
+        ],
+        [
+            "Gender",
+            patient.gender,
+        ],
+        [
+            "Phone",
+            patient.phone,
+        ],
     ]
 
     patient_table = Table(
         patient_data,
-        colWidths=[45 * mm, 120 * mm],
+        colWidths=[
+            45 * mm,
+            120 * mm,
+        ],
     )
 
     patient_table.setStyle(
@@ -207,43 +268,55 @@ def generate_certificate_pdf(
 
     story.append(patient_table)
 
-    story.append(Spacer(1, 15))
+    story.append(
+        Spacer(
+            1,
+            15,
+        )
+    )
 
     story.append(
         Paragraph(
-            "Vaccination Records",
+            "Vaccination Record",
             heading_style,
         )
     )
 
     vaccination_data = [
         [
+            "Field",
+            "Details",
+        ],
+        [
             "Vaccine",
+            immunisation.vaccine.name,
+        ],
+        [
             "Dose",
+            str(
+                immunisation.dose_number
+            ),
+        ],
+        [
             "Date Administered",
+            str(
+                immunisation.date_administered
+            ),
+        ],
+        [
             "Administered By",
-        ]
+            str(
+                immunisation.administered_by
+            ),
+        ],
     ]
-
-    for record in immunisations:
-        vaccination_data.append(
-            [
-                record.vaccine.name,
-                str(record.dose_number),
-                str(record.date_administered),
-                str(record.administered_by),
-            ]
-        )
 
     vaccination_table = Table(
         vaccination_data,
         colWidths=[
             55 * mm,
-            20 * mm,
-            45 * mm,
-            45 * mm,
+            110 * mm,
         ],
-        repeatRows=1,
     )
 
     vaccination_table.setStyle(
@@ -277,7 +350,7 @@ def generate_certificate_pdf(
                     "FONTSIZE",
                     (0, 0),
                     (-1, -1),
-                    8.5,
+                    9,
                 ),
                 (
                     "GRID",
@@ -296,13 +369,13 @@ def generate_certificate_pdf(
                     "TOPPADDING",
                     (0, 0),
                     (-1, -1),
-                    6,
+                    7,
                 ),
                 (
                     "BOTTOMPADDING",
                     (0, 0),
                     (-1, -1),
-                    6,
+                    7,
                 ),
             ]
         )
@@ -310,14 +383,21 @@ def generate_certificate_pdf(
 
     story.append(vaccination_table)
 
-    story.append(Spacer(1, 18))
+    story.append(
+        Spacer(
+            1,
+            18,
+        )
+    )
 
     verification_url = (
         f"{VERIFY_BASE_URL}/verify/"
         f"{certificate_token}"
     )
 
-    qr = qrcode.make(verification_url)
+    qr = qrcode.make(
+        verification_url
+    )
 
     qr_buffer = io.BytesIO()
 
@@ -335,7 +415,8 @@ def generate_certificate_pdf(
     )
 
     qr_text = Paragraph(
-        "Scan this QR code to verify this vaccination certificate.",
+        "Scan this QR code to verify this "
+        "vaccination certificate.",
         normal_style,
     )
 
@@ -386,21 +467,29 @@ def generate_certificate_pdf(
 
     story.append(verification_table)
 
-    story.append(Spacer(1, 12))
+    story.append(
+        Spacer(
+            1,
+            12,
+        )
+    )
 
-    certificate_id = str(uuid.uuid4())
+    certificate_id = str(
+        uuid.uuid4()
+    )
 
     story.append(
         Paragraph(
-            f"Certificate Reference: {certificate_id}",
+            f"Certificate Reference: "
+            f"{certificate_id}",
             normal_style,
         )
     )
 
     story.append(
         Paragraph(
-            "This certificate is generated from the "
-            "vaccination records stored in the "
+            "This certificate is generated from "
+            "the vaccination record stored in the "
             "Digital Immunisation system.",
             normal_style,
         )

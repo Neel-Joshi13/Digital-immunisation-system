@@ -20,12 +20,12 @@ router = APIRouter(
 )
 
 
-@router.get("/me/pdf")
+@router.get("/{immunisation_id}/pdf")
 def download_my_certificate(
+    immunisation_id: int,
     current_user=Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-
     patient = db.scalar(
         select(Patient).where(
             Patient.user_id == current_user.id
@@ -38,7 +38,7 @@ def download_my_certificate(
             detail="Patient profile not found.",
         )
 
-    statement = (
+    immunisation = db.scalar(
         select(ImmunisationRecord)
         .options(
             joinedload(
@@ -46,38 +46,45 @@ def download_my_certificate(
             )
         )
         .where(
-            ImmunisationRecord.patient_id
-            == patient.id
-        )
-        .order_by(
-            ImmunisationRecord.date_administered
+            ImmunisationRecord.id == immunisation_id,
+            ImmunisationRecord.patient_id == patient.id,
         )
     )
 
-    immunisations = db.scalars(
-        statement
-    ).unique().all()
-
-    if not immunisations:
+    if immunisation is None:
         raise HTTPException(
             status_code=404,
-            detail="No vaccination records found.",
+            detail="Vaccination record not found.",
         )
 
     token = create_certificate_token(
         patient.id,
-        [record.id for record in immunisations],
+        immunisation.id,
     )
+
+    certificate_info = {
+        "certificate_type": (
+            "Official Vaccination Certificate"
+        ),
+        "issuing_authority": (
+            "Digital Immunisation Healthcare System"
+        ),
+        "healthcare_service": (
+            "Immunisation & Vaccination Services"
+        ),
+    }
 
     pdf = generate_certificate_pdf(
         patient=patient,
-        immunisations=immunisations,
+        immunisation=immunisation,
         certificate_token=token,
+        certificate_info=certificate_info,
     )
 
     filename = (
-        f"vaccination-certificate-"
-        f"{patient.id}.pdf"
+        "digital-immunisation-"
+        "healthcare-vaccination-certificate-"
+        f"{immunisation.id}.pdf"
     )
 
     return Response(
@@ -95,7 +102,6 @@ def verify_certificate(
     token: str,
     db: Session = Depends(get_db),
 ):
-
     parts = token.split("-", 1)
 
     if len(parts) != 2:
@@ -123,32 +129,59 @@ def verify_certificate(
             detail="Certificate not found.",
         )
 
-    statement = select(
-        ImmunisationRecord
-    ).where(
-        ImmunisationRecord.patient_id
-        == patient_id
+    statement = (
+        select(ImmunisationRecord)
+        .options(
+            joinedload(
+                ImmunisationRecord.vaccine
+            )
+        )
+        .where(
+            ImmunisationRecord.patient_id
+            == patient_id
+        )
+        .order_by(
+            ImmunisationRecord.id
+        )
     )
 
     immunisations = db.scalars(
         statement
     ).all()
 
-    valid = verify_certificate_token(
-        patient_id,
-        [record.id for record in immunisations],
-        token,
-    )
+    matching_record = None
 
-    if not valid:
+    for record in immunisations:
+        if verify_certificate_token(
+            patient_id,
+            record.id,
+            token,
+        ):
+            matching_record = record
+            break
+
+    if matching_record is None:
         raise HTTPException(
             status_code=404,
-            detail="Invalid or outdated certificate.",
+            detail="Invalid certificate.",
         )
 
     return {
         "valid": True,
-        "message": "Vaccination certificate is valid.",
+        "message": (
+            "Vaccination certificate is valid."
+        ),
+        "certificate": {
+            "type": (
+                "Official Vaccination Certificate"
+            ),
+            "issuing_authority": (
+                "Digital Immunisation Healthcare System"
+            ),
+            "healthcare_service": (
+                "Immunisation & Vaccination Services"
+            ),
+        },
         "patient": {
             "name": (
                 f"{patient.first_name} "
@@ -158,7 +191,19 @@ def verify_certificate(
                 patient.date_of_birth
             ),
         },
-        "vaccination_count": len(
-            immunisations
-        ),
+        "vaccination": {
+            "id": matching_record.id,
+            "vaccine": (
+                matching_record.vaccine.name
+            ),
+            "dose_number": (
+                matching_record.dose_number
+            ),
+            "date_administered": str(
+                matching_record.date_administered
+            ),
+            "administered_by": (
+                matching_record.administered_by
+            ),
+        },
     }
